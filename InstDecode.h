@@ -9,6 +9,9 @@
 #define INSTDECODE_H_
 
 #include <string>
+#include "InstData.h"
+
+namespace LB {
 
 // Decode hexdecimal format instruction set to readable string
 // All static functions
@@ -17,5 +20,7 @@
 class InstDecode {
 public:
 };
+
+}
 
 #endif /* INSTDECODE_H_ */

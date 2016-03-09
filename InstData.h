@@ -10,6 +10,8 @@
 
 #include <string>
 
+namespace LB {
+
 // Data structure to store readable Instruction set using "String"
 // Use get() function to Access Private Members(read only)
 
@@ -37,6 +39,7 @@ public:
     void setRd(const std::string &val);
     void setC(const std::string &val);
     void setFunct(const std::string &val);
+
 private:
     InstType type;
     std::string opCode;
@@ -46,5 +49,7 @@ private:
     std::string c;
     std::string funct;
 };
+
+}
 
 #endif /* INSTDATA_H_ */
