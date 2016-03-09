@@ -30,7 +30,7 @@ LB::InstData LB::InstDecode::decodeHexInst(const unsigned& src) {
         rsStr = LB::InstLookUp::registerLookUp(rs);
         rtStr = LB::InstLookUp::registerLookUp(rt);
         rdStr = LB::InstLookUp::registerLookUp(rd);
-        cStr = LB::toString(c);
+        cStr = LB::toHexString(c);
         functStr = LB::InstLookUp::functLookUp(funct);
         InstData ret;
         ret.setType(LB::InstType::R);
@@ -44,7 +44,7 @@ LB::InstData LB::InstDecode::decodeHexInst(const unsigned& src) {
     }
     else if (opCode == 0x02U || opCode == 0x03U) {
         c = LB::InstDecode::getBitsInRange(src, 0, 26);
-        cStr = LB::toString(c);
+        cStr = LB::toHexString(c);
         InstData ret;
         ret.setType(LB::InstType::J);
         ret.setOpCode(opCodeStr);
@@ -64,7 +64,7 @@ LB::InstData LB::InstDecode::decodeHexInst(const unsigned& src) {
         c = LB::InstDecode::getBitsInRange(src, 0, 16);
         rsStr = LB::InstLookUp::registerLookUp(rs);
         rtStr = LB::InstLookUp::registerLookUp(rt);
-        cStr = LB::toString(c);
+        cStr = LB::toHexString(c);
         InstData ret;
         ret.setType(LB::InstType::I);
         ret.setOpCode(opCodeStr);
