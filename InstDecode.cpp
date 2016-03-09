@@ -8,17 +8,14 @@
 #include "InstDecode.h"
 #include <cstdio>
 
-namespace LB {
-
-InstData InstDecode::decodeHexInst(const unsigned& src) {
-    unsigned opCode = (src & 0xFC000000u) >> 26;
-    printf("opCode = %x\n", opCode);
-    return InstData();
+LB::InstData LB::InstDecode::decodeHexInst(const unsigned& src) {
+    unsigned opCode = (src & 0xFC000000U) >> 26;
+    printf("opCode = %x", opCode);
+    printf(" = %s\n", LB::InstLookUp::opCodeLookUp(opCode).c_str());
+    return LB::InstData();
 }
 
-InstData InstDecode::decodeHexInst(const unsigned* src) {
+LB::InstData LB::InstDecode::decodeHexInst(const unsigned* src) {
     const unsigned argu = (src[0] << 16) | src[1];
-    return InstDecode::decodeHexInst(argu);
+    return LB::InstDecode::decodeHexInst(argu);
 }
-
-} /* namespace LB */

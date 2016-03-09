@@ -8,9 +8,18 @@
 #ifndef INSTLOOKUP_H_
 #define INSTLOOKUP_H_
 
+#include <string>
+
 namespace LB {
 
 class InstLookUp {
+public:
+    static std::string opCodeLookUp(const unsigned& src);
+    static std::string functLookUp(const unsigned& src);
+
+private:
+    const static std::string opCodeLookUpTable[];
+    const static std::string functLookUpTable[];
 };
 
 } /* namespace LB */

@@ -10,6 +10,7 @@
 
 #include <string>
 #include "InstData.h"
+#include "InstLookUp.h"
 
 namespace LB {
 
