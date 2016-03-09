@@ -23,7 +23,8 @@ public:
     // decode instruction set with format like 0x7FFFFFFF
     static InstData decodeHexInst(const unsigned &src);
     // decode instruction set with format like 0x7FFF 0xFFFF
-    // will be merged and call decodeHexInst(const int &src);
+    // arguments array passed by pointer
+    // will be merged and call decodeHexInst(const unsigned &src);
     static InstData decodeHexInst(const unsigned *src);
 
 private:
@@ -34,6 +35,6 @@ private:
     static unsigned getBitsInRange(const unsigned& src, const int& l, const int& r);
 };
 
-}
+} /* namespace LB */
 
 #endif /* INSTDECODE_H_ */
