@@ -27,9 +27,9 @@ LB::InstData LB::InstDecode::decodeHexInst(const unsigned& src) {
         rt = LB::InstDecode::getBitsInRange(src, 16, 21);
         rd = LB::InstDecode::getBitsInRange(src, 11, 16);
         c = LB::InstDecode::getBitsInRange(src, 6, 11);
-        rsStr = LB::InstLookUp::registerLookUp(rs);
-        rtStr = LB::InstLookUp::registerLookUp(rt);
-        rdStr = LB::InstLookUp::registerLookUp(rd);
+        rsStr = LB::InstLookUp::registerLookUpNumber(rs);
+        rtStr = LB::InstLookUp::registerLookUpNumber(rt);
+        rdStr = LB::InstLookUp::registerLookUpNumber(rd);
         cStr = LB::toHexString(c);
         functStr = LB::InstLookUp::functLookUp(funct);
         InstData ret;
@@ -62,8 +62,8 @@ LB::InstData LB::InstDecode::decodeHexInst(const unsigned& src) {
         rs = LB::InstDecode::getBitsInRange(src, 21, 26);
         rt = LB::InstDecode::getBitsInRange(src, 16, 21);
         c = LB::InstDecode::getBitsInRange(src, 0, 16);
-        rsStr = LB::InstLookUp::registerLookUp(rs);
-        rtStr = LB::InstLookUp::registerLookUp(rt);
+        rsStr = LB::InstLookUp::registerLookUpNumber(rs);
+        rtStr = LB::InstLookUp::registerLookUpNumber(rt);
         cStr = LB::toHexString(c);
         InstData ret;
         ret.setType(LB::InstType::I);

@@ -17,7 +17,8 @@ class InstLookUp {
 public:
     static std::string opCodeLookUp(const unsigned& src);
     static std::string functLookUp(const unsigned& src);
-    static std::string registerLookUp(const unsigned& src);
+    static std::string registerLookUpNumber(const unsigned& src);
+    static std::string registerLookUpName(const unsigned& src);
 
 private:
     const static std::string opCodeLookUpTable[];

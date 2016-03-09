@@ -152,10 +152,16 @@ std::string LB::InstLookUp::functLookUp(const unsigned& src) {
     return LB::InstLookUp::functLookUpTable[src];
 }
 
-std::string LB::InstLookUp::registerLookUp(const unsigned& src) {
+std::string LB::InstLookUp::registerLookUpNumber(const unsigned& src) {
     if (src > 0x1F) {
         return "undef";
     }
-    // return LB::InstLookUp::registerLookUpTable[src];
     return LB::toString(src);
+}
+
+std::string LB::InstLookUp::registerLookUpName(const unsigned & src) {
+    if (src > 0x1F) {
+        return "undef";
+    }
+    return LB::InstLookUp::registerLookUpTable[src];
 }
