@@ -8,6 +8,6 @@
 #include <cstdio>
 
 int main(int argc, char **argv) {
-    printf("Program Entry\n");
+
     return 0;
 }
