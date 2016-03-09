@@ -156,5 +156,6 @@ std::string LB::InstLookUp::registerLookUp(const unsigned& src) {
     if (src > 0x1F) {
         return "undef";
     }
-    return LB::InstLookUp::registerLookUpTable[src];
+    // return LB::InstLookUp::registerLookUpTable[src];
+    return LB::toString(src);
 }

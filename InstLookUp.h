@@ -9,6 +9,7 @@
 #define INSTLOOKUP_H_
 
 #include <string>
+#include "InstUtility.h"
 
 namespace LB {
 
