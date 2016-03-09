@@ -30,27 +30,25 @@ LB::InstData LB::InstDecode::decodeHexInst(const unsigned& src) {
         rsStr = LB::InstLookUp::registerLookUp(rs);
         rtStr = LB::InstLookUp::registerLookUp(rt);
         rdStr = LB::InstLookUp::registerLookUp(rd);
+        cStr = LB::toString(c);
         functStr = LB::InstLookUp::functLookUp(funct);
-        char cs[100];
-        sprintf(cs, "%#x", c);
         InstData ret;
         ret.setType(LB::InstType::R);
         ret.setOpCode(opCodeStr);
         ret.setRs(rsStr);
         ret.setRt(rtStr);
         ret.setRd(rdStr);
-        ret.setC(cs);
+        ret.setC(cStr);
         ret.setFunct(functStr);
         return ret;
     }
     else if (opCode == 0x02U || opCode == 0x03U) {
         c = LB::InstDecode::getBitsInRange(src, 0, 26);
-        char cs[100];
-        sprintf(cs, "%#x", c);
+        cStr = LB::toString(c);
         InstData ret;
         ret.setType(LB::InstType::J);
         ret.setOpCode(opCodeStr);
-        ret.setC(cs);
+        ret.setC(cStr);
         return ret;
     }
     else if (opCode == 0x3FU) {
@@ -66,14 +64,13 @@ LB::InstData LB::InstDecode::decodeHexInst(const unsigned& src) {
         c = LB::InstDecode::getBitsInRange(src, 0, 16);
         rsStr = LB::InstLookUp::registerLookUp(rs);
         rtStr = LB::InstLookUp::registerLookUp(rt);
-        char cs[100];
-        sprintf(cs, "%#x", c);
+        cStr = LB::toString(c);
         InstData ret;
         ret.setType(LB::InstType::I);
         ret.setOpCode(opCodeStr);
         ret.setRs(rsStr);
         ret.setRt(rtStr);
-        ret.setC(cs);
+        ret.setC(cStr);
         return ret;
     }
 }

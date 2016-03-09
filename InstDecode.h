@@ -11,19 +11,20 @@
 #include <string>
 #include "InstData.h"
 #include "InstLookUp.h"
+#include "InstUtility.h"
 
 namespace LB {
 
-// Decode hex-decimal format instruction set to readable string
-// All static functions
-// return as type InstData defined in "InstData.h"
-
 class InstDecode {
 public:
+    // Decode hex-decimal format instruction set to readable string
+    // All static functions
+    // return type InstData defined in "InstData.h"
+
     // decode instruction set with format like 0x7FFFFFFF
     static InstData decodeHexInst(const unsigned &src);
     // decode instruction set with format like 0x7FFF 0xFFFF
-    // arguments array passed by pointer
+    // argument array passed by pointer
     // will be merged and call decodeHexInst(const unsigned &src);
     static InstData decodeHexInst(const unsigned *src);
 
