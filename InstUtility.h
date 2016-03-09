@@ -8,7 +8,6 @@
 #ifndef INSTUTILITY_H_
 #define INSTUTILITY_H_
 
-#include <iostream>
 #include <sstream>
 #include <string>
 
@@ -18,6 +17,20 @@ template<typename Tp>
 std::string toString(const Tp val) {
     std::basic_stringstream<char> oss;
     oss << val;
+    return oss.str();
+}
+
+template<typename Tp>
+std::string toDecString(const Tp val) {
+    std::basic_stringstream<char> oss;
+    oss << val;
+    return oss.str();
+}
+
+template<typename Tp>
+std::string toHexString(const Tp val) {
+    std::basic_stringstream<char> oss;
+    oss << std::showbase << std::hex << val;
     return oss.str();
 }
 
