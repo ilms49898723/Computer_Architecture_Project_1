@@ -109,10 +109,34 @@ void LB::InstData::setFunct(const std::string& val) {
 
 std::string LB::InstData::toString() {
     if (type == InstType::R) {
-        return funct + " " + rs + " " + rt + " " + rd + " " + c;
+        if (funct == "jr") {
+            return funct + " $" + rs;
+        }
+        else if (funct == "sll" || funct == "srl" || funct == "sra") {
+            return funct + " $" + rd + ", $" + rt + ", " + c;
+        }
+        else {
+            return funct + " $" + rd + ", $" + rs + ", $" + rt;
+        }
     }
     else if (type == InstType::I) {
-        return opCode + " " + rs + " " + rt + " " + c;
+        if (opCode == "lui") {
+            return opCode + " $" + rt + ", " + c;
+        }
+        else if (opCode == "bgtz") {
+            return opCode + " $" + rs + ", " + c;
+        }
+        else if (opCode == "addi" || opCode == "addiu" || opCode == "lui" ||
+                opCode == "andi" || opCode == "ori" || opCode == "nori" ||
+                opCode == "slti") {
+            return opCode + " $" + rt + ", $" + rs + ", " + c;
+        }
+        else if (opCode == "beq" || opCode == "bne") {
+            return opCode + " $" + rs + ", $" + rt + ", " + c;
+        }
+        else {
+            return opCode + " $" + rt + ", " + c + "($" + rs + ")";
+        }
     }
     else if (type == InstType::J) {
         return opCode + " " + c;
@@ -121,6 +145,6 @@ std::string LB::InstData::toString() {
         return opCode;
     }
     else {
-        return "Undef";
+        return "undef";
     }
 }
