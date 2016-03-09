@@ -51,7 +51,7 @@ const std::string LB::InstLookUp::opCodeLookUpTable[] = {
         "sb",
         "sh",
         "undef",  // 0x2A
-        "sw",
+        "sw"
 };
 
 const std::string LB::InstLookUp::functLookUpTable[] = {
