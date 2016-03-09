@@ -13,7 +13,7 @@
 namespace LB {
 
 // Data structure to store readable Instruction set using "String"
-// Use get() function to Access Private Members(read only)
+// Use getXXX() function to Access Private Members
 
 // enum class for instruction type
 // R-type, I-type, J-type, Specialized, Undefined(ex. error)
@@ -39,6 +39,7 @@ public:
     void setRd(const std::string &val);
     void setC(const std::string &val);
     void setFunct(const std::string &val);
+    std::string toString();
 
 private:
     InstType type;

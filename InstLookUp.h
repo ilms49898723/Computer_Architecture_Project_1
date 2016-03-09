@@ -16,10 +16,12 @@ class InstLookUp {
 public:
     static std::string opCodeLookUp(const unsigned& src);
     static std::string functLookUp(const unsigned& src);
+    static std::string registerLookUp(const unsigned& src);
 
 private:
     const static std::string opCodeLookUpTable[];
     const static std::string functLookUpTable[];
+    const static std::string registerLookUpTable[];
 };
 
 } /* namespace LB */

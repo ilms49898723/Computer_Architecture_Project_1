@@ -106,3 +106,21 @@ void LB::InstData::setC(const std::string& val) {
 void LB::InstData::setFunct(const std::string& val) {
     funct = val;
 }
+
+std::string LB::InstData::toString() {
+    if (type == InstType::R) {
+        return funct + " " + rs + " " + rt + " " + rd + " " + c;
+    }
+    else if (type == InstType::I) {
+        return opCode + " " + rs + " " + rt + " " + c;
+    }
+    else if (type == InstType::J) {
+        return opCode + " " + c;
+    }
+    else if (type == InstType::S) {
+        return opCode;
+    }
+    else {
+        return "Undef";
+    }
+}

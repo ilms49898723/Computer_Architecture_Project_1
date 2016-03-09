@@ -7,10 +7,14 @@
 
 #include <cstdio>
 #include "InstDecode.h"
+#include "InstData.h"
 
 int main(int argc, char **argv) {
     unsigned x[2];
-    scanf("%x%x", &x[0], &x[1]);
-    LB::InstDecode::decodeHexInst(x);
+    while (scanf("%x%x", &x[0], &x[1]) == 2) {
+        LB::InstData ret;
+        ret = LB::InstDecode::decodeHexInst(x);
+        printf("%s\n", ret.toString().c_str());
+    }
     return 0;
 }

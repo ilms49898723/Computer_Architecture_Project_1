@@ -8,7 +8,7 @@
 #include "InstLookUp.h"
 
 const std::string LB::InstLookUp::opCodeLookUpTable[] = {
-        "0x00",   // 0x00
+        "R-Type",   // 0x00
         "undef",
         "j",
         "jal",
@@ -100,6 +100,41 @@ const std::string LB::InstLookUp::functLookUpTable[] = {
         "slt"     // 0x30
 };
 
+const std::string LB::InstLookUp::registerLookUpTable[] = {
+        "zero",
+        "at",
+        "v0",
+        "v1",
+        "a0",
+        "a1",
+        "a2",
+        "a3",
+        "t0",
+        "t1",
+        "t2",
+        "t3",
+        "t4",
+        "t5",
+        "t6",
+        "t7",
+        "s0",
+        "s1",
+        "s2",
+        "s3",
+        "s4",
+        "s5",
+        "s6",
+        "s7",
+        "t8",
+        "t9",
+        "k0",
+        "k1",
+        "gp",
+        "sp",
+        "fp",
+        "ra"
+};
+
 std::string LB::InstLookUp::opCodeLookUp(const unsigned& src) {
     if (src == 0x3F) {
         return "halt";
@@ -115,4 +150,11 @@ std::string LB::InstLookUp::functLookUp(const unsigned& src) {
         return "undef";
     }
     return LB::InstLookUp::functLookUpTable[src];
+}
+
+std::string LB::InstLookUp::registerLookUp(const unsigned& src) {
+    if (src > 0x1F) {
+        return "undef";
+    }
+    return LB::InstLookUp::registerLookUpTable[src];
 }
