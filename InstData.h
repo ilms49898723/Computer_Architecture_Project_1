@@ -50,6 +50,6 @@ private:
     std::string funct;
 };
 
-}
+} /* namespace LB */
 
 #endif /* INSTDATA_H_ */

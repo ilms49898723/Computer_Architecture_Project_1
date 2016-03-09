@@ -7,15 +7,17 @@
 
 #include "InstData.h"
 
-LB::InstData::InstData() {
+namespace LB {
+
+InstData::InstData() {
     type = InstType::Undef;
     opCode = rs = rt = rd = c = funct = std::string();
 }
 
-LB::InstData::~InstData() {
+InstData::~InstData() {
 }
 
-LB::InstType LB::InstData::getAll(std::string* dst) {
+InstType InstData::getAll(std::string* dst) {
     if (!dst) {
         return InstType::Undef;
     }
@@ -43,66 +45,68 @@ LB::InstType LB::InstData::getAll(std::string* dst) {
     return type;
 }
 
-std::string LB::InstData::getOpCode() {
+std::string InstData::getOpCode() {
     return opCode;
 }
 
-std::string LB::InstData::getRs() {
+std::string InstData::getRs() {
     if (type == InstType::J || type == InstType::S) {
         return std::string();
     }
     return rs;
 }
 
-std::string LB::InstData::getRt() {
+std::string InstData::getRt() {
     if (type == InstType::J || type == InstType::S) {
         return std::string();
     }
     return rt;
 }
 
-std::string LB::InstData::getRd() {
+std::string InstData::getRd() {
     if (type != InstType::R) {
         return std::string();
     }
     return rd;
 }
 
-std::string LB::InstData::getC() {
+std::string InstData::getC() {
     return c;
 }
 
-std::string LB::InstData::getFunct() {
+std::string InstData::getFunct() {
     if (type != InstType::R) {
         return std::string();
     }
     return funct;
 }
 
-void LB::InstData::setType(const InstType& val) {
+void InstData::setType(const InstType& val) {
     type = val;
 }
 
-void LB::InstData::setOpCode(const std::string& val) {
+void InstData::setOpCode(const std::string& val) {
     opCode = val;
 }
 
-void LB::InstData::setRs(const std::string& val) {
+void InstData::setRs(const std::string& val) {
     rs = val;
 }
 
-void LB::InstData::setRt(const std::string& val) {
+void InstData::setRt(const std::string& val) {
     rt = val;
 }
 
-void LB::InstData::setRd(const std::string& val) {
+void InstData::setRd(const std::string& val) {
     rd = val;
 }
 
-void LB::InstData::setC(const std::string& val) {
+void InstData::setC(const std::string& val) {
     c = val;
 }
 
-void LB::InstData::setFunct(const std::string& val) {
+void InstData::setFunct(const std::string& val) {
     funct = val;
 }
+
+} /* namespace LB */
