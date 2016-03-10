@@ -159,7 +159,7 @@ std::string LB::InstLookUp::registerLookUpNumber(const unsigned& src) {
     return LB::toString(src);
 }
 
-std::string LB::InstLookUp::registerLookUpName(const unsigned & src) {
+std::string LB::InstLookUp::registerLookUpName(const unsigned& src) {
     if (src > 0x1F) {
         return "undef";
     }
