@@ -22,11 +22,11 @@ public:
     // return type InstData defined in "InstData.h"
 
     // decode instruction set with format like 0x7FFFFFFF
-    static InstData decodeHexInst(const unsigned& src);
+    static InstData decodeInst(const unsigned& src);
     // decode instruction set with format like 0x7FFF 0xFFFF
-    // argument array passed by pointer
+    // argument array passed by pointer(array length 2)
     // will be merged and call decodeHexInst(const unsigned &src);
-    static InstData decodeHexInst(const unsigned* src);
+    static InstData decodeInst(const unsigned* src);
 };
 
 } /* namespace LB */

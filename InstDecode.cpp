@@ -7,7 +7,7 @@
 
 #include "InstDecode.h"
 
-LB::InstData LB::InstDecode::decodeHexInst(const unsigned& src) {
+LB::InstData LB::InstDecode::decodeInst(const unsigned& src) {
     unsigned opCode;
     unsigned rs, rt, rd;
     unsigned c;
@@ -75,7 +75,7 @@ LB::InstData LB::InstDecode::decodeHexInst(const unsigned& src) {
     }
 }
 
-LB::InstData LB::InstDecode::decodeHexInst(const unsigned* src) {
+LB::InstData LB::InstDecode::decodeInst(const unsigned* src) {
     const unsigned argu = (src[0] << 16) | src[1];
-    return LB::InstDecode::decodeHexInst(argu);
+    return LB::InstDecode::decodeInst(argu);
 }
