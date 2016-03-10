@@ -16,17 +16,17 @@ LB::InstData LB::InstDecode::decodeHexInst(const unsigned& src) {
     std::string rsStr, rtStr, rdStr;
     std::string cStr;
     std::string functStr;
-    opCode = LB::InstDecode::getBitsInRange(src, 26, 32);
+    opCode = LB::getBitsInRange(src, 26, 32);
     opCodeStr = LB::InstLookUp::opCodeLookUp(opCode);
     if (opCodeStr == "undef") {
         return LB::InstData();
     }
     else if (opCode == 0x0U) {
-        funct = LB::InstDecode::getBitsInRange(src, 0, 6);
-        rs = LB::InstDecode::getBitsInRange(src, 21, 26);
-        rt = LB::InstDecode::getBitsInRange(src, 16, 21);
-        rd = LB::InstDecode::getBitsInRange(src, 11, 16);
-        c = LB::InstDecode::getBitsInRange(src, 6, 11);
+        funct = LB::getBitsInRange(src, 0, 6);
+        rs = LB::getBitsInRange(src, 21, 26);
+        rt = LB::getBitsInRange(src, 16, 21);
+        rd = LB::getBitsInRange(src, 11, 16);
+        c = LB::getBitsInRange(src, 6, 11);
         rsStr = LB::InstLookUp::registerLookUpNumber(rs);
         rtStr = LB::InstLookUp::registerLookUpNumber(rt);
         rdStr = LB::InstLookUp::registerLookUpNumber(rd);
@@ -43,7 +43,7 @@ LB::InstData LB::InstDecode::decodeHexInst(const unsigned& src) {
         return ret;
     }
     else if (opCode == 0x02U || opCode == 0x03U) {
-        c = LB::InstDecode::getBitsInRange(src, 0, 26);
+        c = LB::getBitsInRange(src, 0, 26);
         cStr = LB::toHexString(c);
         InstData ret;
         ret.setType(LB::InstType::J);
@@ -59,9 +59,9 @@ LB::InstData LB::InstDecode::decodeHexInst(const unsigned& src) {
         return ret;
     }
     else {
-        rs = LB::InstDecode::getBitsInRange(src, 21, 26);
-        rt = LB::InstDecode::getBitsInRange(src, 16, 21);
-        c = LB::InstDecode::getBitsInRange(src, 0, 16);
+        rs = LB::getBitsInRange(src, 21, 26);
+        rt = LB::getBitsInRange(src, 16, 21);
+        c = LB::getBitsInRange(src, 0, 16);
         rsStr = LB::InstLookUp::registerLookUpNumber(rs);
         rtStr = LB::InstLookUp::registerLookUpNumber(rt);
         cStr = LB::toHexString(c);
@@ -78,12 +78,4 @@ LB::InstData LB::InstDecode::decodeHexInst(const unsigned& src) {
 LB::InstData LB::InstDecode::decodeHexInst(const unsigned* src) {
     const unsigned argu = (src[0] << 16) | src[1];
     return LB::InstDecode::decodeHexInst(argu);
-}
-
-unsigned LB::InstDecode::getBitsInRange(const unsigned& src, const int& l, const int& r) {
-    unsigned mask = 0;
-    for (int i = l; i < r; ++i) {
-        mask |= (1 << i);
-    }
-    return (src & mask) >> l;
 }
