@@ -6,15 +6,26 @@
  */
 
 #include <cstdio>
-#include "InstDecode.h"
-#include "InstData.h"
+#include "InstSimulator.h"
+
+unsigned readWord();
 
 int main(int argc, char **argv) {
-    unsigned x[2];
-    while (scanf("%x%x", &x[0], &x[1]) == 2) {
-        LB::InstData ret;
-        ret = LB::InstDecode::decodeInst(x);
-        printf("%s\n", ret.toString().c_str());
+    unsigned pc, len;
+    pc = readWord();
+    len = readWord();
+    unsigned insts[11100];
+    printf("len = %u\n", len);
+    for (unsigned i = 0; i < len; ++i) {
+        insts[i] = readWord();
     }
+    LB::InstSimulator simulator;
+    simulator.loadImageI(insts, len, pc);
     return 0;
+}
+
+unsigned readWord() {
+    unsigned a, b;
+    scanf("%x%x", &a, &b);
+    return (a << 16) | b;
 }
