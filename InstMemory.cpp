@@ -61,6 +61,10 @@ unsigned LB::InstMemory::getValueOfAddr(const unsigned& addr, const LB::InstMemL
     }
 }
 
+unsigned LB::InstMemory::getPc() {
+    return pc;
+}
+
 void LB::InstMemory::setValueOfAddr(const unsigned& addr, const unsigned& val, const LB::InstMemLength& type) {
     if (type == LB::InstMemLength::WORD) {
         reg[addr] = val;
@@ -71,4 +75,8 @@ void LB::InstMemory::setValueOfAddr(const unsigned& addr, const unsigned& val, c
     else {
         reg[addr] = val & 0x000000FFU;
     }
+}
+
+void LB::InstMemory::setPc(const unsigned& val) {
+    pc = val;
 }

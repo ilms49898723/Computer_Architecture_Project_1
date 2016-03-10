@@ -30,8 +30,12 @@ public:
     bool isValidAddress(const std::string& opCode, const unsigned& c);
     // get reg value at addr
     unsigned getValueOfAddr(const unsigned& addr, const InstMemLength& type);
+    // get pc
+    unsigned getPc();
     // save reg value to addr
     void setValueOfAddr(const unsigned& addr, const unsigned& val, const InstMemLength& type);
+    // set pc
+    void setPc(const unsigned& val);
 
 private:
     unsigned reg[32];
