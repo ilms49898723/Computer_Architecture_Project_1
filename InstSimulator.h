@@ -8,9 +8,9 @@
 #ifndef INSTSIMULATOR_H_
 #define INSTSIMULATOR_H_
 
+#include <vector>
 #include "InstDecode.h"
 #include "InstMemory.h"
-#include <vector>
 #include "InstDataStr.h"
 
 namespace LB {
@@ -24,7 +24,7 @@ public:
 
 private:
     InstMemory mem;
-    std::vector<InstDataStr> instSet;
+    std::vector<InstDataBin> instSet;
 };
 
 } /* namespace LB */
