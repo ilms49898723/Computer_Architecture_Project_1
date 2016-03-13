@@ -7,7 +7,7 @@
 
 #include "InstDecode.h"
 
-LB::InstData LB::InstDecode::decodeInst(const unsigned& src) {
+LB::InstDataStr LB::InstDecode::decodeInst(const unsigned& src) {
     unsigned opCode;
     unsigned rs, rt, rd;
     unsigned c;
@@ -19,7 +19,7 @@ LB::InstData LB::InstDecode::decodeInst(const unsigned& src) {
     opCode = LB::getBitsInRange(src, 26, 32);
     opCodeStr = LB::InstLookUp::opCodeLookUp(opCode);
     if (opCodeStr == "undef") {
-        return LB::InstData();
+        return LB::InstDataStr();
     }
     else if (opCode == 0x0U) {
         funct = LB::getBitsInRange(src, 0, 6);
@@ -32,7 +32,7 @@ LB::InstData LB::InstDecode::decodeInst(const unsigned& src) {
         rdStr = LB::InstLookUp::registerLookUpNumber(rd);
         cStr = LB::toHexString(c);
         functStr = LB::InstLookUp::functLookUp(funct);
-        InstData ret;
+        InstDataStr ret;
         ret.setType(LB::InstType::R);
         ret.setOpCode(opCodeStr);
         ret.setRs(rsStr);
@@ -45,7 +45,7 @@ LB::InstData LB::InstDecode::decodeInst(const unsigned& src) {
     else if (opCode == 0x02U || opCode == 0x03U) {
         c = LB::getBitsInRange(src, 0, 26);
         cStr = LB::toHexString(c);
-        InstData ret;
+        InstDataStr ret;
         ret.setType(LB::InstType::J);
         ret.setOpCode(opCodeStr);
         ret.setC(cStr);
@@ -53,7 +53,7 @@ LB::InstData LB::InstDecode::decodeInst(const unsigned& src) {
     }
     else if (opCode == 0x3FU) {
         opCodeStr = LB::InstLookUp::opCodeLookUp(opCode);
-        InstData ret;
+        InstDataStr ret;
         ret.setType(LB::InstType::S);
         ret.setOpCode(opCodeStr);
         return ret;
@@ -65,7 +65,7 @@ LB::InstData LB::InstDecode::decodeInst(const unsigned& src) {
         rsStr = LB::InstLookUp::registerLookUpNumber(rs);
         rtStr = LB::InstLookUp::registerLookUpNumber(rt);
         cStr = LB::toHexString(c);
-        InstData ret;
+        InstDataStr ret;
         ret.setType(LB::InstType::I);
         ret.setOpCode(opCodeStr);
         ret.setRs(rsStr);
@@ -75,7 +75,7 @@ LB::InstData LB::InstDecode::decodeInst(const unsigned& src) {
     }
 }
 
-LB::InstData LB::InstDecode::decodeInst(const unsigned* src) {
+LB::InstDataStr LB::InstDecode::decodeInst(const unsigned* src) {
     const unsigned argu = (src[0] << 16) | src[1];
     return LB::InstDecode::decodeInst(argu);
 }

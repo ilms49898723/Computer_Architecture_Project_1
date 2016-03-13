@@ -6,7 +6,6 @@
  */
 
 #include "InstSimulator.h"
-#include <cstdio>
 
 LB::InstSimulator::InstSimulator() {
     instSet.clear();
@@ -20,7 +19,6 @@ void LB::InstSimulator::loadImageI(const unsigned* src, const unsigned& len, con
     mem.setPc(pc);
     for (unsigned i = 0; i < len; ++i) {
         instSet.push_back(LB::InstDecode::decodeInst(src[i]));
-        printf("load %s\n", LB::InstDecode::decodeInst(src[i]).toString().c_str());
     }
 }
 

@@ -5,8 +5,8 @@
  *      Author: LittleBird
  */
 
-#ifndef INSTDATA_H_
-#define INSTDATA_H_
+#ifndef INSTDATASTR_H_
+#define INSTDATASTR_H_
 
 #include <string>
 
@@ -21,10 +21,10 @@ enum class InstType : unsigned {
     R, I, J, S, Undef
 };
 
-class InstData {
+class InstDataStr {
 public:
-    InstData();
-    virtual ~InstData();
+    InstDataStr();
+    virtual ~InstDataStr();
     InstType getAll(std::string *dst);
     std::string getOpCode();
     std::string getRs();
@@ -53,4 +53,4 @@ private:
 
 } /* namespace LB */
 
-#endif /* INSTDATA_H_ */
+#endif /* INSTDATASTR_H_ */

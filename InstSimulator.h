@@ -10,9 +10,8 @@
 
 #include "InstDecode.h"
 #include "InstMemory.h"
-#include "InstData.h"
-
 #include <vector>
+#include "InstDataStr.h"
 
 namespace LB {
 
@@ -25,7 +24,7 @@ public:
 
 private:
     InstMemory mem;
-    std::vector<InstData> instSet;
+    std::vector<InstDataStr> instSet;
 };
 
 } /* namespace LB */

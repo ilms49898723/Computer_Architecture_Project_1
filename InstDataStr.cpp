@@ -5,17 +5,17 @@
  *      Author: LittleBird
  */
 
-#include "InstData.h"
+#include "InstDataStr.h"
 
-LB::InstData::InstData() {
+LB::InstDataStr::InstDataStr() {
     type = InstType::Undef;
     opCode = rs = rt = rd = c = funct = std::string();
 }
 
-LB::InstData::~InstData() {
+LB::InstDataStr::~InstDataStr() {
 }
 
-LB::InstType LB::InstData::getAll(std::string* dst) {
+LB::InstType LB::InstDataStr::getAll(std::string* dst) {
     if (!dst) {
         return InstType::Undef;
     }
@@ -43,71 +43,71 @@ LB::InstType LB::InstData::getAll(std::string* dst) {
     return type;
 }
 
-std::string LB::InstData::getOpCode() {
+std::string LB::InstDataStr::getOpCode() {
     return opCode;
 }
 
-std::string LB::InstData::getRs() {
+std::string LB::InstDataStr::getRs() {
     if (type == InstType::J || type == InstType::S) {
         return std::string();
     }
     return rs;
 }
 
-std::string LB::InstData::getRt() {
+std::string LB::InstDataStr::getRt() {
     if (type == InstType::J || type == InstType::S) {
         return std::string();
     }
     return rt;
 }
 
-std::string LB::InstData::getRd() {
+std::string LB::InstDataStr::getRd() {
     if (type != InstType::R) {
         return std::string();
     }
     return rd;
 }
 
-std::string LB::InstData::getC() {
+std::string LB::InstDataStr::getC() {
     return c;
 }
 
-std::string LB::InstData::getFunct() {
+std::string LB::InstDataStr::getFunct() {
     if (type != InstType::R) {
         return std::string();
     }
     return funct;
 }
 
-void LB::InstData::setType(const InstType& val) {
+void LB::InstDataStr::setType(const InstType& val) {
     type = val;
 }
 
-void LB::InstData::setOpCode(const std::string& val) {
+void LB::InstDataStr::setOpCode(const std::string& val) {
     opCode = val;
 }
 
-void LB::InstData::setRs(const std::string& val) {
+void LB::InstDataStr::setRs(const std::string& val) {
     rs = val;
 }
 
-void LB::InstData::setRt(const std::string& val) {
+void LB::InstDataStr::setRt(const std::string& val) {
     rt = val;
 }
 
-void LB::InstData::setRd(const std::string& val) {
+void LB::InstDataStr::setRd(const std::string& val) {
     rd = val;
 }
 
-void LB::InstData::setC(const std::string& val) {
+void LB::InstDataStr::setC(const std::string& val) {
     c = val;
 }
 
-void LB::InstData::setFunct(const std::string& val) {
+void LB::InstDataStr::setFunct(const std::string& val) {
     funct = val;
 }
 
-std::string LB::InstData::toString() {
+std::string LB::InstDataStr::toString() {
     if (type == InstType::R) {
         if (funct == "jr") {
             return funct + " $" + rs;
