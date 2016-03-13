@@ -18,7 +18,7 @@ LB::InstSimulator::~InstSimulator() {
 void LB::InstSimulator::loadImageI(const unsigned* src, const unsigned& len, const unsigned& pc) {
     mem.setPc(pc);
     for (unsigned i = 0; i < len; ++i) {
-        instSet.push_back(LB::InstDecode::decodeInst(src[i]));
+        instSet.push_back(LB::InstDecode::decodeInstStr(src[i]));
     }
 }
 
