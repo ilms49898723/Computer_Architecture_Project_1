@@ -13,6 +13,12 @@
 
 namespace LB {
 
+// enum class for instruction type
+// R-type, I-type, J-type, Specialized, Undefined(ex. error)
+enum class InstType : unsigned {
+    R, I, J, S, Undef
+};
+
 template<typename Tp>
 std::string toString(const Tp& val) {
     std::basic_stringstream<char> oss;

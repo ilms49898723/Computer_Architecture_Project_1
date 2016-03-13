@@ -15,64 +15,40 @@ LB::InstDataStr::InstDataStr() {
 LB::InstDataStr::~InstDataStr() {
 }
 
-LB::InstType LB::InstDataStr::getAll(std::string* dst) {
-    if (!dst) {
-        return InstType::Undef;
-    }
-    if (type == InstType::R) {
-        dst[0] = opCode;
-        dst[1] = rs;
-        dst[2] = rt;
-        dst[3] = rd;
-        dst[4] = c;
-        dst[5] = funct;
-    }
-    else if (type == InstType::I) {
-        dst[0] = opCode;
-        dst[1] = rs;
-        dst[2] = rt;
-        dst[3] = c;
-    }
-    else if (type == InstType::J) {
-        dst[0] = opCode;
-        dst[1] = c;
-    }
-    else {
-        dst[0] = opCode;
-    }
+LB::InstType LB::InstDataStr::getType() const {
     return type;
 }
 
-std::string LB::InstDataStr::getOpCode() {
+std::string LB::InstDataStr::getOpCode() const {
     return opCode;
 }
 
-std::string LB::InstDataStr::getRs() {
+std::string LB::InstDataStr::getRs() const {
     if (type == InstType::J || type == InstType::S) {
         return std::string();
     }
     return rs;
 }
 
-std::string LB::InstDataStr::getRt() {
+std::string LB::InstDataStr::getRt() const {
     if (type == InstType::J || type == InstType::S) {
         return std::string();
     }
     return rt;
 }
 
-std::string LB::InstDataStr::getRd() {
+std::string LB::InstDataStr::getRd() const {
     if (type != InstType::R) {
         return std::string();
     }
     return rd;
 }
 
-std::string LB::InstDataStr::getC() {
+std::string LB::InstDataStr::getC() const {
     return c;
 }
 
-std::string LB::InstDataStr::getFunct() {
+std::string LB::InstDataStr::getFunct() const {
     if (type != InstType::R) {
         return std::string();
     }
@@ -107,7 +83,7 @@ void LB::InstDataStr::setFunct(const std::string& val) {
     funct = val;
 }
 
-std::string LB::InstDataStr::toString() {
+std::string LB::InstDataStr::toString() const {
     if (type == InstType::R) {
         if (funct == "jr") {
             return funct + " $" + rs;

@@ -9,29 +9,24 @@
 #define INSTDATASTR_H_
 
 #include <string>
+#include "InstUtility.h"
 
 namespace LB {
 
 // Data structure to store readable Instruction set using "String"
 // Use getXXX() function to Access Private Members
 
-// enum class for instruction type
-// R-type, I-type, J-type, Specialized, Undefined(ex. error)
-enum class InstType : unsigned {
-    R, I, J, S, Undef
-};
-
 class InstDataStr {
 public:
     InstDataStr();
     virtual ~InstDataStr();
-    InstType getAll(std::string *dst);
-    std::string getOpCode();
-    std::string getRs();
-    std::string getRt();
-    std::string getRd();
-    std::string getC();
-    std::string getFunct();
+    InstType getType() const;
+    std::string getOpCode() const;
+    std::string getRs() const;
+    std::string getRt() const;
+    std::string getRd() const;
+    std::string getC() const;
+    std::string getFunct() const;
     void setType(const InstType& val);
     void setOpCode(const std::string& val);
     void setRs(const std::string &val);
@@ -39,7 +34,7 @@ public:
     void setRd(const std::string &val);
     void setC(const std::string &val);
     void setFunct(const std::string &val);
-    std::string toString();
+    std::string toString() const;
 
 private:
     InstType type;
