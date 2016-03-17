@@ -50,11 +50,11 @@ void LB::InstSimulator::simulate(FILE* snapshot, FILE* errorDump) {
             simulateTypeJ(current, errorDump);
         }
         ++cycle;
-        dumpMemInfoPrivate(cycle, snapshot);
+        dumpMemoryInfoPrivate(cycle, snapshot);
     }
 }
 
-void LB::InstSimulator::dumpMemInfoPrivate(const int& cycle, FILE* snapshot) {
+void LB::InstSimulator::dumpMemoryInfoPrivate(const int& cycle, FILE* snapshot) {
     fprintf(snapshot, "cycle %d\n", cycle);
     for (int i = 0; i < 32; ++i) {
         fprintf(snapshot, "%02d: %#08X\n", i, mem.getValueOfAddr(i, LB::InstMemLength::WORD));

@@ -29,7 +29,7 @@ public:
 private:
     InstMemory mem;
     std::vector<InstDataBin> instSet;
-    void dumpMemInfoPrivate(const int& cycle, FILE* snapshot);
+    void dumpMemoryInfoPrivate(const int& cycle, FILE* snapshot);
     void simulateTypeR(const InstDataBin& inst, FILE* errorDump);
     void simulateTypeI(const InstDataBin& inst, FILE* errorDump);
     void simulateTypeJ(const InstDataBin& inst, FILE* errorDump);
