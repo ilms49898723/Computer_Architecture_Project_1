@@ -8,7 +8,8 @@
 #include <cstdio>
 #include "InstSimulator.h"
 
-unsigned readWord();
+inline unsigned readWord();
+inline unsigned readWordFromBin(FILE* fin);
 
 int main(int argc, char **argv) {
     unsigned pc, len;
@@ -24,8 +25,14 @@ int main(int argc, char **argv) {
     return 0;
 }
 
-unsigned readWord() {
+inline unsigned readWord() {
     unsigned a, b;
     scanf("%x%x", &a, &b);
     return (a << 16) | b;
+}
+
+inline unsigned readWordFromBin(FILE *fin) {
+    unsigned char input[4];
+    fread(input, sizeof(char), 4, fin);
+    return (input[0] << 24) | (input[1] << 16) | (input[2] << 8) | (input[3]);
 }
