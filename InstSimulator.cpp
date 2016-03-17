@@ -184,9 +184,53 @@ void LB::InstSimulator::simulateTypeR(const InstDataBin& inst, FILE* errorDump) 
             break;
         }
     }
+    mem.setPc(mem.getPc() + 4);
 }
 
 void LB::InstSimulator::simulateTypeI(const InstDataBin& inst, FILE* errorDump) {
+    switch(inst.getOpCode()) {
+        case 0x08U: {
+            // addi
+            // TODO: overflow detect not completed!!!
+            unsigned rt;
+            rt = mem.getValueOfAddr(inst.getRs(), LB::InstMemLength::WORD) + inst.getC();
+            mem.setValueOfAddr(inst.getRt(), rt, LB::InstMemLength::WORD);
+            break;
+        }
+        case 0x09U: {
+            // addiu
+            unsigned rt;
+            rt = mem.getValueOfAddr(inst.getRs(), LB::InstMemLength::WORD) + inst.getC();
+            mem.setValueOfAddr(inst.getRt(), rt, LB::InstMemLength::WORD);
+            break;
+        }
+        case 0x23U: {
+            // lw
+            unsigned rt;
+            rt = mem.getValueOfAddr(inst.getRs() + inst.getC(),LB::InstMemLength::WORD);
+            mem.setValueOfAddr(inst.getRt(), rt, LB::InstMemLength::WORD);
+            break;
+        }
+        case 0x21U: {
+            // lh
+            // FIXME: MEMORY MAY HAVE BUGS!!!
+            unsigned rt;
+            rt = mem.getValueOfAddr(inst.getRs() + inst.getC(),LB::InstMemLength::HALFWORD);
+            mem.setValueOfAddr(inst.getRt(), rt, LB::InstMemLength::WORD);
+            break;
+        }
+        case 0x25U: {
+            // lhu
+            // FIXME: MEMORY MAY HAVE BUGS!!!
+            unsigned rt;
+            rt = mem.getValueOfAddr(inst.getRs() + inst.getC(),LB::InstMemLength::HALFWORD);
+            mem.setValueOfAddr(inst.getRt(), rt, LB::InstMemLength::WORD);
+            break;
+        }
+        case 0x20U: {
+            break;
+        }
+    }
 }
 
 void LB::InstSimulator::simulateTypeJ(const InstDataBin& inst, FILE* errorDump) {
