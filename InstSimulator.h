@@ -8,6 +8,8 @@
 #ifndef INSTSIMULATOR_H_
 #define INSTSIMULATOR_H_
 
+#include <cstdio>
+#include <cstdlib>
 #include <vector>
 #include "InstDecode.h"
 #include "InstMemory.h"
@@ -19,12 +21,18 @@ class InstSimulator {
 public:
     InstSimulator();
     virtual ~InstSimulator();
+    void init();
     void loadImageI(const unsigned* src, const unsigned& len, const unsigned& pc);
     void loadImageD(const unsigned* src, const unsigned& len, const unsigned& sp);
+    void simulate(FILE* snapshot, FILE* errorDump);
 
 private:
     InstMemory mem;
     std::vector<InstDataBin> instSet;
+    void dumpMemInfoPrivate(const int& cycle, FILE* snapshot);
+    void simulateTypeR(const InstDataBin& inst, FILE* errorDump);
+    void simulateTypeI(const InstDataBin& inst, FILE* errorDump);
+    void simulateTypeJ(const InstDataBin& inst, FILE* errorDump);
 };
 
 } /* namespace LB */
