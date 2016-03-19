@@ -40,11 +40,14 @@ public:
     unsigned getPc();
     // set pc
     void setPc(const unsigned& val);
+    // get initializePc
+    unsigned getInitPc();
 
 private:
     unsigned char mem[1024];
     unsigned reg[32];
     unsigned pc;
+    unsigned initalizePc;
 };
 
 } /* namespace LB */

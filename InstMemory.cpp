@@ -8,13 +8,13 @@
 #include "InstMemory.h"
 
 LB::InstMemory::InstMemory() {
-    pc = 0U;
+    initalizePc = pc = 0U;
     memset(reg, 0, sizeof(unsigned) * 32);
     memset(mem, 0, sizeof(unsigned char) * 1024);
 }
 
 LB::InstMemory::InstMemory(const unsigned& initPc) {
-    pc = initPc;
+    initalizePc = pc = initPc;
     memset(reg, 0, sizeof(unsigned) * 32);
     memset(mem, 0, sizeof(unsigned char) * 1024);
 }
@@ -110,4 +110,8 @@ unsigned LB::InstMemory::getPc() {
 
 void LB::InstMemory::setPc(const unsigned& val) {
     pc = val;
+}
+
+unsigned LB::InstMemory::getInitPc() {
+    return initalizePc;
 }
