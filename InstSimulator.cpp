@@ -29,9 +29,9 @@ void LB::InstSimulator::loadImageI(const unsigned* src, const unsigned& len, con
 
 void LB::InstSimulator::loadImageD(const unsigned* src, const unsigned& len, const unsigned& sp) {
     // sp -> $29 == $(0x1D)
-    mem.setValueOfAddr(0x1DU, sp, LB::InstMemLength::WORD);
+    mem.setRegValueOfAddr(0x1DU, sp, LB::InstMemLength::WORD);
     for (unsigned i = 0; i < len; ++i) {
-        mem.setValueOfAddr(i, src[i], LB::InstMemLength::WORD);
+        mem.setRegValueOfAddr(i, src[i], LB::InstMemLength::WORD);
     }
 }
 
@@ -57,7 +57,7 @@ void LB::InstSimulator::simulate(FILE* snapshot, FILE* errorDump) {
 void LB::InstSimulator::dumpMemoryInfoPrivate(const int& cycle, FILE* snapshot) {
     fprintf(snapshot, "cycle %d\n", cycle);
     for (int i = 0; i < 32; ++i) {
-        fprintf(snapshot, "%02d: %#08X\n", i, mem.getValueOfAddr(i, LB::InstMemLength::WORD));
+        fprintf(snapshot, "%02d: %#08X\n", i, mem.getRegValueOfAddr(i, LB::InstMemLength::WORD));
     }
     fprintf(snapshot, "\n\n");
 }
@@ -67,115 +67,115 @@ void LB::InstSimulator::simulateTypeR(const InstDataBin& inst, FILE* errorDump) 
         case 0x20U: {
             // add, rd = rs + rt, has of
             int rs, rt, rd;
-            rs = mem.getValueOfAddr(inst.getRs(), LB::InstMemLength::WORD);
-            rt = mem.getValueOfAddr(inst.getRt(), LB::InstMemLength::WORD);
+            rs = mem.getRegValueOfAddr(inst.getRs(), LB::InstMemLength::WORD);
+            rt = mem.getRegValueOfAddr(inst.getRt(), LB::InstMemLength::WORD);
             rd = rs + rt;
-            mem.setValueOfAddr(inst.getRd(), rd, LB::InstMemLength::WORD);
+            mem.setRegValueOfAddr(inst.getRd(), rd, LB::InstMemLength::WORD);
             break;
         }
         case 0x21U: {
             // addu, rd = rs + rt
             unsigned rs, rt, rd;
-            rs = mem.getValueOfAddr(inst.getRs(), LB::InstMemLength::WORD);
-            rt = mem.getValueOfAddr(inst.getRt(), LB::InstMemLength::WORD);
+            rs = mem.getRegValueOfAddr(inst.getRs(), LB::InstMemLength::WORD);
+            rt = mem.getRegValueOfAddr(inst.getRt(), LB::InstMemLength::WORD);
             rd = rs + rt;
-            mem.setValueOfAddr(inst.getRd(), rd, LB::InstMemLength::WORD);
+            mem.setRegValueOfAddr(inst.getRd(), rd, LB::InstMemLength::WORD);
             break;
         }
         case 0x22U: {
             // sub, rd = rs - rt
             int rs, rt, rd;
-            rs = mem.getValueOfAddr(inst.getRs(), LB::InstMemLength::WORD);
-            rt = mem.getValueOfAddr(inst.getRt(), LB::InstMemLength::WORD);
+            rs = mem.getRegValueOfAddr(inst.getRs(), LB::InstMemLength::WORD);
+            rt = mem.getRegValueOfAddr(inst.getRt(), LB::InstMemLength::WORD);
             rd = rs - rt;
-            mem.setValueOfAddr(inst.getRd(), rd, LB::InstMemLength::WORD);
+            mem.setRegValueOfAddr(inst.getRd(), rd, LB::InstMemLength::WORD);
             break;
         }
         case 0x24U: {
             // and, rd = rs & rt
             unsigned rs, rt, rd;
-            rs = mem.getValueOfAddr(inst.getRs(), LB::InstMemLength::WORD);
-            rt = mem.getValueOfAddr(inst.getRt(), LB::InstMemLength::WORD);
+            rs = mem.getRegValueOfAddr(inst.getRs(), LB::InstMemLength::WORD);
+            rt = mem.getRegValueOfAddr(inst.getRt(), LB::InstMemLength::WORD);
             rd = rs & rt;
-            mem.setValueOfAddr(inst.getRd(), rd, LB::InstMemLength::WORD);
+            mem.setRegValueOfAddr(inst.getRd(), rd, LB::InstMemLength::WORD);
             break;
         }
         case 0x25U: {
             // or, rd = rs | rt
             unsigned rs, rt, rd;
-            rs = mem.getValueOfAddr(inst.getRs(), LB::InstMemLength::WORD);
-            rt = mem.getValueOfAddr(inst.getRt(), LB::InstMemLength::WORD);
+            rs = mem.getRegValueOfAddr(inst.getRs(), LB::InstMemLength::WORD);
+            rt = mem.getRegValueOfAddr(inst.getRt(), LB::InstMemLength::WORD);
             rd = rs | rt;
-            mem.setValueOfAddr(inst.getRd(), rd, LB::InstMemLength::WORD);
+            mem.setRegValueOfAddr(inst.getRd(), rd, LB::InstMemLength::WORD);
             break;
         }
         case 0x26U: {
             // xor, rd = rs ^ rt
             unsigned rs, rt, rd;
-            rs = mem.getValueOfAddr(inst.getRs(), LB::InstMemLength::WORD);
-            rt = mem.getValueOfAddr(inst.getRt(), LB::InstMemLength::WORD);
+            rs = mem.getRegValueOfAddr(inst.getRs(), LB::InstMemLength::WORD);
+            rt = mem.getRegValueOfAddr(inst.getRt(), LB::InstMemLength::WORD);
             rd = rs ^ rt;
-            mem.setValueOfAddr(inst.getRd(), rd, LB::InstMemLength::WORD);
+            mem.setRegValueOfAddr(inst.getRd(), rd, LB::InstMemLength::WORD);
             break;
         }
         case 0x27U: {
             // nor, rd = ~(rs | rt)
             unsigned rs, rt, rd;
-            rs = mem.getValueOfAddr(inst.getRs(), LB::InstMemLength::WORD);
-            rt = mem.getValueOfAddr(inst.getRt(), LB::InstMemLength::WORD);
+            rs = mem.getRegValueOfAddr(inst.getRs(), LB::InstMemLength::WORD);
+            rt = mem.getRegValueOfAddr(inst.getRt(), LB::InstMemLength::WORD);
             rd = ~(rs | rt);
-            mem.setValueOfAddr(inst.getRd(), rd, LB::InstMemLength::WORD);
+            mem.setRegValueOfAddr(inst.getRd(), rd, LB::InstMemLength::WORD);
             break;
         }
         case 0x28U: {
             // nand, rd = ~(rs & rt)
             unsigned rs, rt, rd;
-            rs = mem.getValueOfAddr(inst.getRs(), LB::InstMemLength::WORD);
-            rt = mem.getValueOfAddr(inst.getRt(), LB::InstMemLength::WORD);
+            rs = mem.getRegValueOfAddr(inst.getRs(), LB::InstMemLength::WORD);
+            rt = mem.getRegValueOfAddr(inst.getRt(), LB::InstMemLength::WORD);
             rd = ~(rs & rt);
-            mem.setValueOfAddr(inst.getRd(), rd, LB::InstMemLength::WORD);
+            mem.setRegValueOfAddr(inst.getRd(), rd, LB::InstMemLength::WORD);
             break;
         }
         case 0x2AU: {
             // slt, rd = (rs < rt)
             int rs, rt, rd;
-            rs = mem.getValueOfAddr(inst.getRs(), LB::InstMemLength::WORD);
-            rt = mem.getValueOfAddr(inst.getRt(), LB::InstMemLength::WORD);
+            rs = mem.getRegValueOfAddr(inst.getRs(), LB::InstMemLength::WORD);
+            rt = mem.getRegValueOfAddr(inst.getRt(), LB::InstMemLength::WORD);
             rd = rs < rt;
-            mem.setValueOfAddr(inst.getRd(), rd, LB::InstMemLength::WORD);
+            mem.setRegValueOfAddr(inst.getRd(), rd, LB::InstMemLength::WORD);
             break;
         }
         case 0x00U: {
             // sll, rd = rt << c
             unsigned rd, rt, c;
-            rt = mem.getValueOfAddr(inst.getRt(), LB::InstMemLength::WORD);
-            c = mem.getValueOfAddr(inst.getC(), LB::InstMemLength::WORD);
+            rt = mem.getRegValueOfAddr(inst.getRt(), LB::InstMemLength::WORD);
+            c = mem.getRegValueOfAddr(inst.getC(), LB::InstMemLength::WORD);
             rd = rt << c;
-            mem.setValueOfAddr(inst.getRd(), rd, LB::InstMemLength::WORD);
+            mem.setRegValueOfAddr(inst.getRd(), rd, LB::InstMemLength::WORD);
             break;
         }
         case 0x02U: {
             // srl, rd = rt >> c
             unsigned rd, rt, c;
-            rt = mem.getValueOfAddr(inst.getRt(), LB::InstMemLength::WORD);
-            c = mem.getValueOfAddr(inst.getC(), LB::InstMemLength::WORD);
+            rt = mem.getRegValueOfAddr(inst.getRt(), LB::InstMemLength::WORD);
+            c = mem.getRegValueOfAddr(inst.getC(), LB::InstMemLength::WORD);
             rd = rt >> c;
-            mem.setValueOfAddr(inst.getRd(), rd, LB::InstMemLength::WORD);
+            mem.setRegValueOfAddr(inst.getRd(), rd, LB::InstMemLength::WORD);
             break;
         }
         case 0x03U: {
             // sra, rd = rt >> c(with sign bit)
             int rd, rt, c;
-            rt = mem.getValueOfAddr(inst.getRt(), LB::InstMemLength::WORD);
-            c = mem.getValueOfAddr(inst.getC(), LB::InstMemLength::WORD);
+            rt = mem.getRegValueOfAddr(inst.getRt(), LB::InstMemLength::WORD);
+            c = mem.getRegValueOfAddr(inst.getC(), LB::InstMemLength::WORD);
             rd = rt << c;
-            mem.setValueOfAddr(inst.getRd(), rd, LB::InstMemLength::WORD);
+            mem.setRegValueOfAddr(inst.getRd(), rd, LB::InstMemLength::WORD);
             break;
         }
         case 0x08U: {
             // jr, pc = rs
             unsigned rs;
-            rs = mem.getValueOfAddr(inst.getRs(), LB::InstMemLength::WORD);
+            rs = mem.getRegValueOfAddr(inst.getRs(), LB::InstMemLength::WORD);
             mem.setPc(rs);
             break;
         }
@@ -193,38 +193,38 @@ void LB::InstSimulator::simulateTypeI(const InstDataBin& inst, FILE* errorDump) 
             // addi
             // TODO: overflow detect not completed!!!
             unsigned rt;
-            rt = mem.getValueOfAddr(inst.getRs(), LB::InstMemLength::WORD) + inst.getC();
-            mem.setValueOfAddr(inst.getRt(), rt, LB::InstMemLength::WORD);
+            rt = mem.getRegValueOfAddr(inst.getRs(), LB::InstMemLength::WORD) + inst.getC();
+            mem.setRegValueOfAddr(inst.getRt(), rt, LB::InstMemLength::WORD);
             break;
         }
         case 0x09U: {
             // addiu
             unsigned rt;
-            rt = mem.getValueOfAddr(inst.getRs(), LB::InstMemLength::WORD) + inst.getC();
-            mem.setValueOfAddr(inst.getRt(), rt, LB::InstMemLength::WORD);
+            rt = mem.getRegValueOfAddr(inst.getRs(), LB::InstMemLength::WORD) + inst.getC();
+            mem.setRegValueOfAddr(inst.getRt(), rt, LB::InstMemLength::WORD);
             break;
         }
         case 0x23U: {
             // lw
             unsigned rt;
-            rt = mem.getValueOfAddr(inst.getRs() + inst.getC(),LB::InstMemLength::WORD);
-            mem.setValueOfAddr(inst.getRt(), rt, LB::InstMemLength::WORD);
+            rt = mem.getRegValueOfAddr(inst.getRs() + inst.getC(),LB::InstMemLength::WORD);
+            mem.setRegValueOfAddr(inst.getRt(), rt, LB::InstMemLength::WORD);
             break;
         }
         case 0x21U: {
             // lh
             // FIXME: MEMORY MAY HAVE BUGS!!!
             unsigned rt;
-            rt = mem.getValueOfAddr(inst.getRs() + inst.getC(),LB::InstMemLength::HALFWORD);
-            mem.setValueOfAddr(inst.getRt(), rt, LB::InstMemLength::WORD);
+            rt = mem.getRegValueOfAddr(inst.getRs() + inst.getC(),LB::InstMemLength::HALFWORD);
+            mem.setRegValueOfAddr(inst.getRt(), rt, LB::InstMemLength::WORD);
             break;
         }
         case 0x25U: {
             // lhu
             // FIXME: MEMORY MAY HAVE BUGS!!!
             unsigned rt;
-            rt = mem.getValueOfAddr(inst.getRs() + inst.getC(),LB::InstMemLength::HALFWORD);
-            mem.setValueOfAddr(inst.getRt(), rt, LB::InstMemLength::WORD);
+            rt = mem.getRegValueOfAddr(inst.getRs() + inst.getC(),LB::InstMemLength::HALFWORD);
+            mem.setRegValueOfAddr(inst.getRt(), rt, LB::InstMemLength::WORD);
             break;
         }
         case 0x20U: {
