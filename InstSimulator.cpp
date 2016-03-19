@@ -206,24 +206,25 @@ void LB::InstSimulator::simulateTypeI(const InstDataBin& inst, FILE* errorDump) 
         }
         case 0x23U: {
             // lw
+            // TODO: memory check not completed!!!
             unsigned rt;
-            rt = mem.getRegValueOfAddr(inst.getRs() + inst.getC(),LB::InstMemLength::WORD);
+            rt = mem.getMemValueOfAddr(inst.getRs() + inst.getC(), LB::InstMemLength::WORD);
             mem.setRegValueOfAddr(inst.getRt(), rt, LB::InstMemLength::WORD);
             break;
         }
         case 0x21U: {
             // lh
-            // FIXME: MEMORY MAY HAVE BUGS!!!
+            // TODO: memory check not completed!!!
             unsigned rt;
-            rt = mem.getRegValueOfAddr(inst.getRs() + inst.getC(),LB::InstMemLength::HALFWORD);
+            rt = mem.getMemValueOfAddr(inst.getRs() + inst.getC(),LB::InstMemLength::HALFWORD);
             mem.setRegValueOfAddr(inst.getRt(), rt, LB::InstMemLength::WORD);
             break;
         }
         case 0x25U: {
             // lhu
-            // FIXME: MEMORY MAY HAVE BUGS!!!
+            // TODO: memory check not completed!!!
             unsigned rt;
-            rt = mem.getRegValueOfAddr(inst.getRs() + inst.getC(),LB::InstMemLength::HALFWORD);
+            rt = mem.getMemValueOfAddr(inst.getRs() + inst.getC(),LB::InstMemLength::HALFWORD);
             mem.setRegValueOfAddr(inst.getRt(), rt, LB::InstMemLength::WORD);
             break;
         }
