@@ -7,28 +7,30 @@
 
 #include "InstMemory.h"
 
-LB::InstMemory::InstMemory() {
+namespace LB {
+
+InstMemory::InstMemory() {
     initalizePc = pc = 0U;
     memset(reg, 0, sizeof(unsigned) * 32);
     memset(mem, 0, sizeof(unsigned char) * 1024);
 }
 
-LB::InstMemory::InstMemory(const unsigned& initPc) {
+InstMemory::InstMemory(const unsigned& initPc) {
     initalizePc = pc = initPc;
     memset(reg, 0, sizeof(unsigned) * 32);
     memset(mem, 0, sizeof(unsigned char) * 1024);
 }
 
-LB::InstMemory::~InstMemory() {
+InstMemory::~InstMemory() {
 }
 
-void LB::InstMemory::init(const unsigned& initPc) {
+void InstMemory::init(const unsigned& initPc) {
     pc = initPc;
     memset(reg, 0, sizeof(unsigned) * 32);
     memset(mem, 0, sizeof(unsigned char) * 1024);
 }
 
-bool LB::InstMemory::isValidAddress(const unsigned& opCode, const unsigned& c) {
+bool InstMemory::isValidAddress(const unsigned& opCode, const unsigned& c) {
     if (opCode == 0x23U || opCode == 0x2B) {
         return (c % 4) == 0;
     }
@@ -40,7 +42,7 @@ bool LB::InstMemory::isValidAddress(const unsigned& opCode, const unsigned& c) {
     }
 }
 
-bool LB::InstMemory::isValidAddress(const std::string& opCode, const unsigned& c) {
+bool InstMemory::isValidAddress(const std::string& opCode, const unsigned& c) {
     if (opCode == "lw" || opCode == "sw") {
         return (c % 4) == 0;
     }
@@ -52,11 +54,11 @@ bool LB::InstMemory::isValidAddress(const std::string& opCode, const unsigned& c
     }
 }
 
-unsigned LB::InstMemory::getRegValueOfAddr(const unsigned& addr, const LB::InstMemLen& type) {
-    if (type == LB::InstMemLen::WORD) {
+unsigned InstMemory::getRegValueOfAddr(const unsigned& addr, const InstMemLen& type) {
+    if (type == InstMemLen::WORD) {
         return reg[addr];
     }
-    else if (type == LB::InstMemLen::HALFWORD) {
+    else if (type == InstMemLen::HALFWORD) {
         return reg[addr] & 0x0000FFFFU;
     }
     else {
@@ -64,11 +66,11 @@ unsigned LB::InstMemory::getRegValueOfAddr(const unsigned& addr, const LB::InstM
     }
 }
 
-void LB::InstMemory::setRegValueOfAddr(const unsigned& addr, const unsigned& val, const LB::InstMemLen& type) {
-    if (type == LB::InstMemLen::WORD) {
+void InstMemory::setRegValueOfAddr(const unsigned& addr, const unsigned& val, const InstMemLen& type) {
+    if (type == InstMemLen::WORD) {
         reg[addr] = val;
     }
-    else if (type == LB::InstMemLen::HALFWORD) {
+    else if (type == InstMemLen::HALFWORD) {
         reg[addr] = val & 0x0000FFFFU;
     }
     else {
@@ -76,11 +78,11 @@ void LB::InstMemory::setRegValueOfAddr(const unsigned& addr, const unsigned& val
     }
 }
 
-unsigned LB::InstMemory::getMemValueOfAddr(const unsigned& addr, const InstMemLen& type) {
-    if (type == LB::InstMemLen::WORD) {
+unsigned InstMemory::getMemValueOfAddr(const unsigned& addr, const InstMemLen& type) {
+    if (type == InstMemLen::WORD) {
         return (mem[addr] << 24) | (mem[addr + 1] << 16) | (mem[addr + 2] << 8) | mem[addr + 3];
     }
-    else if (type == LB::InstMemLen::HALFWORD) {
+    else if (type == InstMemLen::HALFWORD) {
         return (mem[addr] << 8) | (mem[addr + 1]);
     }
     else {
@@ -88,14 +90,14 @@ unsigned LB::InstMemory::getMemValueOfAddr(const unsigned& addr, const InstMemLe
     }
 }
 
-void LB::InstMemory::setMemValueOfAddr(const unsigned& addr, const unsigned& val, const InstMemLen& type) {
-    if (type == LB::InstMemLen::WORD) {
+void InstMemory::setMemValueOfAddr(const unsigned& addr, const unsigned& val, const InstMemLen& type) {
+    if (type == InstMemLen::WORD) {
         mem[addr] = static_cast<unsigned char>((val >> 24) & 0xFFU);
         mem[addr + 1] = static_cast<unsigned char>((val >> 16) & 0xFFU);
         mem[addr + 2] = static_cast<unsigned char>((val >> 8) & 0xFFU);
         mem[addr + 3] = static_cast<unsigned char>(val & 0xFFU);
     }
-    else if (type == LB::InstMemLen::HALFWORD) {
+    else if (type == InstMemLen::HALFWORD) {
         mem[addr] = static_cast<unsigned char>((val >> 8) & 0xFFU);
         mem[addr + 1] = static_cast<unsigned char>(val & 0xFFU);
     }
@@ -104,18 +106,20 @@ void LB::InstMemory::setMemValueOfAddr(const unsigned& addr, const unsigned& val
     }
 }
 
-unsigned LB::InstMemory::getPc() {
+unsigned InstMemory::getPc() {
     return pc;
 }
 
-void LB::InstMemory::setPc(const unsigned& val) {
+void InstMemory::setPc(const unsigned& val) {
     pc = val;
 }
 
-unsigned LB::InstMemory::getInitPc() {
+unsigned InstMemory::getInitPc() {
     return initalizePc;
 }
 
-void LB::InstMemory::setInitlizePc(const unsigned& val) {
+void InstMemory::setInitlizePc(const unsigned& val) {
     initalizePc = val;
 }
+
+} /* namespace LB */
