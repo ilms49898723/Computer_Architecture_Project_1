@@ -26,13 +26,13 @@ public:
     bool isValidAddress(const unsigned& opCode, const unsigned& c);
     bool isValidAddress(const std::string& opCode, const unsigned& c);
     // get reg value at addr
-    unsigned getRegValueOfAddr(const unsigned& addr, const InstMemLength& type);
+    unsigned getRegValueOfAddr(const unsigned& addr, const InstMemLen& type);
     // set reg value to addr
-    void setRegValueOfAddr(const unsigned& addr, const unsigned& val, const InstMemLength& type);
+    void setRegValueOfAddr(const unsigned& addr, const unsigned& val, const InstMemLen& type);
     // get memory value at addr, return as unsigned
-    unsigned getMemValueOfAddr(const unsigned& addr, const InstMemLength& type);
+    unsigned getMemValueOfAddr(const unsigned& addr, const InstMemLen& type);
     // set memory value at addr, parameter all passed as unsigned
-    void setMemValueOfAddr(const unsigned& addr, const unsigned& val, const InstMemLength& type);
+    void setMemValueOfAddr(const unsigned& addr, const unsigned& val, const InstMemLen& type);
     // get pc
     unsigned getPc();
     // set pc
