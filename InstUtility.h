@@ -50,7 +50,10 @@ std::string toHexString(const Tp& val) {
     return oss.str();
 }
 
-// to extend sign bits
+// for convenience, only use static_cast<int>
+int toSigned(const unsigned& src);
+
+// extend sign bits
 // ex. 1 byte "0x80" to 4 bytes "0xFFFFFF80"
 int toSigned(const unsigned& src, const LB::InstMemLen& type);
 

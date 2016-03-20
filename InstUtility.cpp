@@ -7,6 +7,10 @@
 
 #include "InstUtility.h"
 
+int LB::toSigned(const unsigned& src) {
+    return static_cast<int>(src);
+}
+
 int LB::toSigned(const unsigned& src, const LB::InstMemLen& type) {
     if (type == LB::InstMemLen::WORD) {
         return static_cast<int>(src);
@@ -30,3 +34,4 @@ unsigned LB::toUnsigned(const int& src) {
 unsigned LB::getBitsInRange(const unsigned& src, const int& l, const int& r) {
     return (src << (32 - r)) >> (l + (32 - r));
 }
+
