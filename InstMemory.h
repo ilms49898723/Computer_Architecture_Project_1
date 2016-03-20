@@ -42,6 +42,8 @@ public:
     void setPc(const unsigned& val);
     // get initializePc
     unsigned getInitPc();
+    // set initializePc
+    void setInitlizePc(const unsigned& val);
 
 private:
     unsigned char mem[1024];

@@ -115,3 +115,7 @@ void LB::InstMemory::setPc(const unsigned& val) {
 unsigned LB::InstMemory::getInitPc() {
     return initalizePc;
 }
+
+void LB::InstMemory::setInitlizePc(const unsigned& val) {
+    initalizePc = val;
+}
