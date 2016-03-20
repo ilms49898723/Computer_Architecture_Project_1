@@ -60,9 +60,7 @@ int toSigned(const unsigned& src, const LB::InstMemLen& type);
 // extend sign bits
 // similar to int toSigned(const unsigned& src, const LB::InstMemLen& type);
 // argument type pass by bits number instead
-/**
- * bits: src bits
- */
+// bits: src bits
 int toSigned(const unsigned& src, const int& bits);
 
 // for convenience, only use static_cast<unsigned>
