@@ -7,22 +7,6 @@
 
 #include "InstMemory.h"
 
-unsigned LB::InstMemory::extendSignBit(const unsigned& src, const LB::InstMemLength& type) {
-    if (type == LB::InstMemLength::WORD) {
-        return src;
-    }
-    else if (type == LB::InstMemLength::HALFWORD) {
-        int var = static_cast<int>(src << 16);
-        unsigned ret = static_cast<unsigned>(var >> 16);
-        return ret;
-    }
-    else {
-        int var = static_cast<int>(src << 24);
-        unsigned ret = static_cast<unsigned>(var >> 24);
-        return ret;
-    }
-}
-
 LB::InstMemory::InstMemory() {
     initalizePc = pc = 0U;
     memset(reg, 0, sizeof(unsigned) * 32);

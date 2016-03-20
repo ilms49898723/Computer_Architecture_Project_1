@@ -10,18 +10,12 @@
 
 #include <cstring>
 #include <string>
+#include "InstUtility.h"
 
 namespace LB {
 
-enum class InstMemLength {
-    WORD, HALFWORD, BYTE
-};
-
-// 32 registers + pc
+// 1024 memory + 32 registers + pc
 class InstMemory {
-public:
-    static unsigned extendSignBit(const unsigned& src, const InstMemLength& type);
-
 public:
     InstMemory();
     InstMemory(const unsigned& initPc);
