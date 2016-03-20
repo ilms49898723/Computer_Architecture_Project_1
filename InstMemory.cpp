@@ -7,7 +7,7 @@
 
 #include "InstMemory.h"
 
-unsigned LB::InstMemory::extendSignBit(const unsigned& src, LB::InstMemLength& type) {
+unsigned LB::InstMemory::extendSignBit(const unsigned& src, const LB::InstMemLength& type) {
     if (type == LB::InstMemLength::WORD) {
         return src;
     }
