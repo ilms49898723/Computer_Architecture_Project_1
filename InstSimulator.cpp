@@ -40,7 +40,7 @@ void LB::InstSimulator::simulate(FILE* snapshot, FILE* errorDump) {
     int currentInstIdx = (memory.getPc() - memory.getInitPc()) >> 2;
     int cycle = 0;
     {
-        // initialize state dump
+        // initial state dump
         dumpMemoryInfoPrivate(cycle, snapshot);
         ++cycle;
     }
