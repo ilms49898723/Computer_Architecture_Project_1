@@ -20,6 +20,9 @@ enum class InstMemLength {
 // 32 registers + pc
 class InstMemory {
 public:
+    static unsigned extendSignBit(const unsigned& src, InstMemLength& type);
+
+public:
     InstMemory();
     InstMemory(const unsigned& initPc);
     virtual ~InstMemory();
