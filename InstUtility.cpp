@@ -23,6 +23,10 @@ int LB::toSigned(const unsigned& src, const LB::InstMemLength& type) {
     }
 }
 
+unsigned LB::toUnsigned(const int& src) {
+    return static_cast<unsigned>(src);
+}
+
 unsigned LB::getBitsInRange(const unsigned& src, const int& l, const int& r) {
     return (src << (32 - r)) >> (l + (32 - r));
 }

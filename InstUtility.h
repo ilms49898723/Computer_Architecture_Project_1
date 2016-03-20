@@ -54,6 +54,9 @@ std::string toHexString(const Tp& val) {
 // ex. 1 byte "0x80" to 4 bytes "0xFFFFFF80"
 int toSigned(const unsigned& src, const LB::InstMemLength& type);
 
+// for convenience, only use static_cast<unsigned>
+unsigned toUnsigned(const int& src);
+
 // get bits from range [l, r)
 // ex. getBitsInRange(0xC, 0, 3) returns 0x4
 // 0xC = 0b1100 returns 0b100
