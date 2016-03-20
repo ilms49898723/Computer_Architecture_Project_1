@@ -7,66 +7,70 @@
 
 #include "InstDataBin.h"
 
-LB::InstDataBin::InstDataBin() {
-    type = LB::InstType::Undef;
+namespace LB {
+
+InstDataBin::InstDataBin() {
+    type = InstType::Undef;
     opCode = rs = rt = rd = c = funct = 0U;
 }
 
-LB::InstDataBin::~InstDataBin() {
+InstDataBin::~InstDataBin() {
 }
 
-LB::InstType LB::InstDataBin::getType() const {
+InstType InstDataBin::getType() const {
     return type;
 }
 
-unsigned LB::InstDataBin::getOpCode() const {
+unsigned InstDataBin::getOpCode() const {
     return opCode;
 }
 
-unsigned LB::InstDataBin::getRs() const {
+unsigned InstDataBin::getRs() const {
     return rs;
 }
 
-unsigned LB::InstDataBin::getRt() const {
+unsigned InstDataBin::getRt() const {
     return rt;
 }
 
-unsigned LB::InstDataBin::getRd() const {
+unsigned InstDataBin::getRd() const {
     return rd;
 }
 
-unsigned LB::InstDataBin::getC() const {
+unsigned InstDataBin::getC() const {
     return c;
 }
 
-unsigned LB::InstDataBin::getFunct() const {
+unsigned InstDataBin::getFunct() const {
     return funct;
 }
 
-void LB::InstDataBin::setType(const InstType& val) {
+void InstDataBin::setType(const InstType& val) {
     type = val;
 }
 
-void LB::InstDataBin::setOpCode(const unsigned& val) {
+void InstDataBin::setOpCode(const unsigned& val) {
     opCode = val;
 }
 
-void LB::InstDataBin::setRs(const unsigned& val) {
+void InstDataBin::setRs(const unsigned& val) {
     rs = val;
 }
 
-void LB::InstDataBin::setRt(const unsigned& val) {
+void InstDataBin::setRt(const unsigned& val) {
     rt = val;
 }
 
-void LB::InstDataBin::setRd(const unsigned& val) {
+void InstDataBin::setRd(const unsigned& val) {
     rd = val;
 }
 
-void LB::InstDataBin::setC(const unsigned& val) {
+void InstDataBin::setC(const unsigned& val) {
     c = val;
 }
 
-void LB::InstDataBin::setFunct(const unsigned& val) {
+void InstDataBin::setFunct(const unsigned& val) {
     funct = val;
 }
+
+} /* namespace LB */

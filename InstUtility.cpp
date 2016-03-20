@@ -7,15 +7,17 @@
 
 #include "InstUtility.h"
 
-int LB::toSigned(const unsigned& src) {
+namespace LB {
+
+int toSigned(const unsigned& src) {
     return static_cast<int>(src);
 }
 
-int LB::toSigned(const unsigned& src, const LB::InstMemLen& type) {
-    if (type == LB::InstMemLen::WORD) {
+int toSigned(const unsigned& src, const InstMemLen& type) {
+    if (type == InstMemLen::WORD) {
         return static_cast<int>(src);
     }
-    else if (type == LB::InstMemLen::HALFWORD) {
+    else if (type == InstMemLen::HALFWORD) {
         int var = static_cast<int>(src << 16);
         int ret = var >> 16;
         return ret;
@@ -27,16 +29,18 @@ int LB::toSigned(const unsigned& src, const LB::InstMemLen& type) {
     }
 }
 
-int LB::toSigned(const unsigned& src, const int& bits) {
+int toSigned(const unsigned& src, const int& bits) {
     int var = static_cast<int>(src << (32 - bits));
     int ret = var >> (32 - bits);
     return ret;
 }
 
-unsigned LB::toUnsigned(const int& src) {
+unsigned toUnsigned(const int& src) {
     return static_cast<unsigned>(src);
 }
 
-unsigned LB::getBitsInRange(const unsigned& src, const int& l, const int& r) {
+unsigned getBitsInRange(const unsigned& src, const int& l, const int& r) {
     return (src << (32 - r)) >> (l + (32 - r));
 }
+
+} /* namespace LB */
