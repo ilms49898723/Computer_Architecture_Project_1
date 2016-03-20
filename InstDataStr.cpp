@@ -7,6 +7,8 @@
 
 #include "InstDataStr.h"
 
+namespace LB {
+
 LB::InstDataStr::InstDataStr() {
     type = InstType::Undef;
     opCode = rs = rt = rd = c = funct = std::string();
@@ -124,3 +126,5 @@ std::string LB::InstDataStr::toString() const {
         return "undef";
     }
 }
+
+} /* namespace LB */
