@@ -57,6 +57,14 @@ int toSigned(const unsigned& src);
 // ex. 1 byte "0x80" to 4 bytes "0xFFFFFF80"
 int toSigned(const unsigned& src, const LB::InstMemLen& type);
 
+// extend sign bits
+// similar to int toSigned(const unsigned& src, const LB::InstMemLen& type);
+// argument type pass by bits number instead
+/**
+ * bits: src bits
+ */
+int toSigned(const unsigned& src, const int& bits);
+
 // for convenience, only use static_cast<unsigned>
 unsigned toUnsigned(const int& src);
 
