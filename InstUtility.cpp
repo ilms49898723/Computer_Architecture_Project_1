@@ -7,11 +7,11 @@
 
 #include "InstUtility.h"
 
-int LB::toSigned(const unsigned& src, const LB::InstMemLength& type) {
-    if (type == LB::InstMemLength::WORD) {
+int LB::toSigned(const unsigned& src, const LB::InstMemLen& type) {
+    if (type == LB::InstMemLen::WORD) {
         return static_cast<int>(src);
     }
-    else if (type == LB::InstMemLength::HALFWORD) {
+    else if (type == LB::InstMemLen::HALFWORD) {
         int var = static_cast<int>(src << 16);
         int ret = var >> 16;
         return ret;

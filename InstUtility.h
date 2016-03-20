@@ -23,7 +23,7 @@ enum class InstType : unsigned {
 // WORD: 4 bytes
 // HALFWORD: 2 bytes
 // BYTE: 1 byte
-enum class InstMemLength {
+enum class InstMemLen {
     WORD, HALFWORD, BYTE
 };
 
@@ -52,7 +52,7 @@ std::string toHexString(const Tp& val) {
 
 // to extend sign bits
 // ex. 1 byte "0x80" to 4 bytes "0xFFFFFF80"
-int toSigned(const unsigned& src, const LB::InstMemLength& type);
+int toSigned(const unsigned& src, const LB::InstMemLen& type);
 
 // for convenience, only use static_cast<unsigned>
 unsigned toUnsigned(const int& src);
