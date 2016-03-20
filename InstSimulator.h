@@ -27,7 +27,7 @@ public:
     void simulate(FILE* snapshot, FILE* errorDump);
 
 private:
-    InstMemory mem;
+    InstMemory memory;
     std::vector<InstDataBin> instSet;
     void dumpMemoryInfoPrivate(const int& cycle, FILE* snapshot);
     void simulateTypeR(const InstDataBin& inst, FILE* errorDump);
