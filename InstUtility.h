@@ -23,7 +23,7 @@ enum class InstType : unsigned {
 // WORD: 4 bytes
 // HALFWORD: 2 bytes
 // BYTE: 1 byte
-enum class InstMemLen {
+enum class InstMemLen : unsigned {
     WORD, HALFWORD, BYTE
 };
 
