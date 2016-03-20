@@ -14,9 +14,17 @@
 namespace LB {
 
 // enum class for instruction type
-// R-type, I-type, J-type, Specialized, Undefined(ex. error)
+// R-type, I-type, J-type, Specialized, Undefined
 enum class InstType : unsigned {
     R, I, J, S, Undef
+};
+
+// enum class for memory size type
+// WORD: 4 bytes
+// HALFWORD: 2 bytes
+// BYTE: 1 byte
+enum class InstMemLength {
+    WORD, HALFWORD, BYTE
 };
 
 template<typename Tp>
@@ -41,6 +49,10 @@ std::string toHexString(const Tp& val) {
     oss << std::showbase << std::hex << val;
     return oss.str();
 }
+
+// to extend sign bits
+// ex. 1 byte "0x80" to 4 bytes "0xFFFFFF80"
+int toSigned(const unsigned& src, const LB::InstMemLength& type);
 
 // get bits from range [l, r)
 // ex. getBitsInRange(0xC, 0, 3) returns 0x4
