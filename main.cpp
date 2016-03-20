@@ -20,8 +20,18 @@ int main(int argc, char **argv) {
     for (unsigned i = 0; i < len; ++i) {
         insts[i] = readWord();
     }
+    unsigned dim[11100];
+    unsigned dlen;
+    unsigned sp;
+    sp = readWord();
+    dlen  = readWord();
+    for (unsigned i = 0; i < dlen; ++i) {
+        dim[i] = readWord();
+    }
     LB::InstSimulator simulator;
     simulator.loadImageI(insts, len, pc);
+    simulator.loadImageD(dim, dlen, sp);
+    simulator.simulate(stdout, stderr);
     return 0;
 }
 
