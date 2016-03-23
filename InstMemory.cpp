@@ -9,6 +9,30 @@
 
 namespace LB {
 
+bool InstMemory::isValidAddress(const unsigned& opCode, const unsigned& addr) {
+    if (opCode == 0x23U || opCode == 0x2B) {
+        return (addr % 4) == 0;
+    }
+    else if (opCode == 0x21U || opCode == 0x25U || opCode == 0x29U) {
+        return (addr & 1) == 0;
+    }
+    else {
+        return true;
+    }
+}
+
+bool InstMemory::isValidAddress(const std::string& opCode, const unsigned& addr) {
+    if (opCode == "lw" || opCode == "sw") {
+        return (addr % 4) == 0;
+    }
+    else if (opCode == "lh" || opCode == "lhu" || opCode == "sh") {
+        return (addr & 1) == 0;
+    }
+    else {
+        return true;
+    }
+}
+
 InstMemory::InstMemory() {
     initalizePc = pc = 0U;
     memset(reg, 0, sizeof(unsigned) * 32);
@@ -28,30 +52,6 @@ void InstMemory::init(const unsigned& initPc) {
     pc = initPc;
     memset(reg, 0, sizeof(unsigned) * 32);
     memset(mem, 0, sizeof(unsigned char) * 1024);
-}
-
-bool InstMemory::isValidAddress(const unsigned& opCode, const unsigned& c) {
-    if (opCode == 0x23U || opCode == 0x2B) {
-        return (c % 4) == 0;
-    }
-    else if (opCode == 0x21U || opCode == 0x25U || opCode == 0x29U) {
-        return (c & 1) == 0;
-    }
-    else {
-        return true;
-    }
-}
-
-bool InstMemory::isValidAddress(const std::string& opCode, const unsigned& c) {
-    if (opCode == "lw" || opCode == "sw") {
-        return (c % 4) == 0;
-    }
-    else if (opCode == "lh" || opCode == "lhu" || opCode == "sh") {
-        return (c & 1) == 0;
-    }
-    else {
-        return true;
-    }
 }
 
 unsigned InstMemory::getRegValueOfAddr(const unsigned& addr, const InstMemLen& type) {
