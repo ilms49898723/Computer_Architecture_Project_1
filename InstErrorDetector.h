@@ -23,10 +23,7 @@ namespace LB {
 class InstErrorDetector {
 public:
     // for argument with type InstDataBin, InstDataStr
-    // only check reg $rs
     static bool isRegWritable(const unsigned& reg);
-    static bool isRegWritable(const InstDataBin& inst);
-    static bool isRegWritable(const InstDataStr& inst);
 
     // check overflow
     // check src0 "+" src1

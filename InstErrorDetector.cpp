@@ -13,14 +13,6 @@ bool InstErrorDetector::isRegWritable(const unsigned& reg) {
     return reg != 0U;
 }
 
-bool InstErrorDetector::isRegWritable(const InstDataBin& inst) {
-    return inst.getRt() != 0U;
-}
-
-bool InstErrorDetector::isRegWritable(const InstDataStr& inst) {
-    return inst.getRt() != "zero" && inst.getRt() != "0";
-}
-
 bool InstErrorDetector::isValidMemoryAddr(const unsigned& addr) {
     return addr >= 0U && addr < 1024U;
 }
