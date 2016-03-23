@@ -19,6 +19,12 @@ enum class InstOpType : unsigned {
     ADD, SUB, MUL, DIV, MOD
 };
 
+// enum class for simulate operation
+// continue, halt
+enum class InstAction : unsigned {
+    CONTINUE, HALT
+};
+
 // enum class for instruction type
 // R-type, I-type, J-type, Specialized, Undefined
 enum class InstType : unsigned {
