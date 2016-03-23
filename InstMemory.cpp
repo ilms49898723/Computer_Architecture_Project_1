@@ -67,6 +67,9 @@ unsigned InstMemory::getRegValueOfAddr(const unsigned& addr, const InstMemLen& t
 }
 
 void InstMemory::setRegValueOfAddr(const unsigned& addr, const unsigned& val, const InstMemLen& type) {
+    if (addr == 0U) {
+        return;
+    }
     if (type == InstMemLen::WORD) {
         reg[addr] = val;
     }
