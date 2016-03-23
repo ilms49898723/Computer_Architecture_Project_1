@@ -13,6 +13,12 @@
 
 namespace LB {
 
+// enum class for basic operation type
+// add, sub, mul, div, mod
+enum class InstOpType : unsigned {
+    ADD, SUB, MUL, DIV, MOD
+};
+
 // enum class for instruction type
 // R-type, I-type, J-type, Specialized, Undefined
 enum class InstType : unsigned {
