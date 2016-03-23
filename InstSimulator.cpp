@@ -218,7 +218,7 @@ void InstSimulator::simulateTypeI(const InstDataBin& inst, FILE* errorDump) {
             // addiu, rt = rs + c(unsigned)
             unsigned rt, rs, c;
             rs = memory.getRegValueOfAddr(inst.getRs(), InstMemLen::WORD);
-            c = inst.getC();
+            c = toSigned(inst.getC(), 16);
             rt = rs + c;
             memory.setRegValueOfAddr(inst.getRt(), rt, InstMemLen::WORD);
             break;
