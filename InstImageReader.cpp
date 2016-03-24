@@ -14,7 +14,9 @@ unsigned InstImageReader::readImageI(std::string filePath, unsigned* dst, unsign
     if (!iimage) {
         return 0u;
     }
-    return readImageI(iimage, dst, pc);
+    unsigned ret = readImageI(iimage, dst, pc);
+    fclose(iimage);
+    return ret;
 }
 
 unsigned InstImageReader::readImageI(FILE* iimage, unsigned* dst, unsigned* pc) {
@@ -33,7 +35,9 @@ unsigned InstImageReader::readImageD(std::string filePath, unsigned* dst, unsign
     if (!dimage) {
         return 0u;
     }
-    return readImageD(dimage, dst, sp);
+    unsigned ret = readImageD(dimage, dst, sp);
+    fclose(dimage);
+    return ret;
 }
 
 unsigned InstImageReader::readImageD(FILE* dimage, unsigned* dst, unsigned* sp) {

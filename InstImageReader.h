@@ -22,7 +22,7 @@ public:
     static unsigned readImageD(std::string filePath, unsigned* dst, unsigned* sp);
     static unsigned readImageD(FILE* dimage, unsigned* dst, unsigned* sp);
 
-private:
+public:
     static unsigned char readByteFromBin(FILE* fin);
     static unsigned readWordFromBin(FILE* fin);
 };
