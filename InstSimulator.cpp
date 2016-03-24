@@ -47,6 +47,9 @@ void InstSimulator::loadImageD(const unsigned* src, const unsigned& len, const u
 }
 
 void InstSimulator::simulate(FILE* snapshot, FILE* errorDump) {
+    if (instSet.empty()) {
+        return;
+    }
     this->snapshot = snapshot;
     this->errorDump = errorDump;
     isAlive = true;

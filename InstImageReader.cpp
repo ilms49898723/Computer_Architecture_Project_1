@@ -12,6 +12,7 @@ namespace LB {
 unsigned InstImageReader::readImageI(std::string filePath, unsigned* dst, unsigned* pc) {
     FILE* iimage = fopen(filePath.c_str(), "rb");
     if (!iimage) {
+        *pc = 0u;
         return 0u;
     }
     unsigned ret = readImageI(iimage, dst, pc);
@@ -33,6 +34,7 @@ unsigned InstImageReader::readImageI(FILE* iimage, unsigned* dst, unsigned* pc) 
 unsigned InstImageReader::readImageD(std::string filePath, unsigned* dst, unsigned* sp) {
     FILE* dimage = fopen(filePath.c_str(), "rb");
     if (!dimage) {
+        *sp = 0u;
         return 0u;
     }
     unsigned ret = readImageD(dimage, dst, sp);
