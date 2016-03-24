@@ -53,13 +53,17 @@ unsigned InstImageReader::readImageD(FILE* dimage, unsigned* dst, unsigned* sp) 
 
 unsigned char InstImageReader::readByteFromBin(FILE* fin) {
     unsigned char input;
-    fread(&input, sizeof(unsigned char), 1, fin);
+    if (fread(&input, sizeof(unsigned char), 1, fin) != 1u) {
+        return 0u;
+    }
     return input;
 }
 
 unsigned InstImageReader::readWordFromBin(FILE* fin) {
     unsigned char input[4];
-    fread(input, sizeof(unsigned char), 4, fin);
+    if (fread(input, sizeof(unsigned char), 4, fin) != 4u) {
+        return 0u;
+    }
     return (input[0] << 24) | (input[1] << 16) | (input[2] << 8) | (input[3]);
 }
 
