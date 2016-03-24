@@ -21,6 +21,9 @@ int main(int argc, char **argv) {
     FILE *snapshot, *error;
     snapshot = fopen("userSnapShot.rpt", "w");
     error = fopen("userErrorDump.rpt", "w");
+    if (!snapshot || !error) {
+        return 0;
+    }
     LB::InstSimulator simulator;
     simulator.loadImageI(inst, ilen, pc);
     simulator.loadImageD(memory, dlen, sp);
