@@ -12,6 +12,10 @@ namespace LB {
 InstSimulator::InstSimulator() {
     instSet.clear();
     memory.init();
+    cycle = 0;
+    snapshot = nullptr;
+    errorDump = nullptr;
+    isAlive = true;
 }
 
 InstSimulator::~InstSimulator() {
@@ -20,11 +24,15 @@ InstSimulator::~InstSimulator() {
 void InstSimulator::init() {
     instSet.clear();
     memory.init();
+    cycle = 0;
+    snapshot = nullptr;
+    errorDump = nullptr;
+    isAlive = true;
 }
 
 void InstSimulator::loadImageI(const unsigned* src, const unsigned& len, const unsigned& pc) {
     memory.setPc(pc);
-    memory.setInitlizePc(pc);
+    memory.setInitialPc(pc);
     for (unsigned i = 0; i < len; ++i) {
         instSet.push_back(InstDecode::decodeInstBin(src[i]));
     }
@@ -32,164 +40,172 @@ void InstSimulator::loadImageI(const unsigned* src, const unsigned& len, const u
 
 void InstSimulator::loadImageD(const unsigned* src, const unsigned& len, const unsigned& sp) {
     // sp -> $29
-    memory.setRegValueOfAddr(29, sp, InstMemLen::WORD);
+    memory.setRegValue(29, sp, InstMemLen::WORD);
     for (unsigned i = 0; i < len; ++i) {
-        memory.setMemValueOfAddr(i * 4, src[i], InstMemLen::WORD);
+        memory.setMemValue(i * 4, src[i], InstMemLen::WORD);
     }
 }
 
 void InstSimulator::simulate(FILE* snapshot, FILE* errorDump) {
+    this->snapshot = snapshot;
+    this->errorDump = errorDump;
+    isAlive = true;
+    cycle = 0;
     int currentInstIdx = (memory.getPc() - memory.getInitPc()) >> 2;
-    int cycle = 0;
     {
         // initial state dump
-        dumpMemoryInfoPrivate(cycle, snapshot);
+        dumpMemoryInfoPrivate(cycle);
         ++cycle;
     }
     while (instSet[currentInstIdx].getOpCode() != 0x3FU) {
         InstDataBin& current = instSet[currentInstIdx];
+        checkInst(current);
+        if (!isAlive) {
+            break;
+        }
         if (current.getType() == InstType::R) {
-            simulateTypeR(current, errorDump);
+            simulateTypeR(current);
         }
         else if (current.getType() == InstType::I) {
-            simulateTypeI(current, errorDump);
+            simulateTypeI(current);
         }
         else if (current.getType() == InstType::J) {
-            simulateTypeJ(current, errorDump);
+            simulateTypeJ(current);
         }
-        dumpMemoryInfoPrivate(cycle, snapshot);
+        dumpMemoryInfoPrivate(cycle);
         currentInstIdx = (memory.getPc() - memory.getInitPc()) >> 2;
         ++cycle;
     }
 }
 
-void InstSimulator::dumpMemoryInfoPrivate(const int& cycle, FILE* snapshot) {
+void InstSimulator::dumpMemoryInfoPrivate(const int& cycle) {
     fprintf(snapshot, "cycle %d\n", cycle);
     for (int i = 0; i < 32; ++i) {
-        fprintf(snapshot, "$%02d: 0x%08X\n", i, memory.getRegValueOfAddr(i, InstMemLen::WORD));
+        fprintf(snapshot, "$%02d: 0x%08X\n", i, memory.getRegValue(i, InstMemLen::WORD));
     }
     fprintf(snapshot, "PC: 0x%08X\n", memory.getPc());
     fprintf(snapshot, "\n\n");
 }
 
-void InstSimulator::simulateTypeR(const InstDataBin& inst, FILE* errorDump) {
+void InstSimulator::simulateTypeR(const InstDataBin& inst) {
     switch (inst.getFunct()) {
         case 0x20U: {
             // add, rd = rs + rt
             int rs, rt;
             unsigned rd;
-            rs = toSigned(memory.getRegValueOfAddr(inst.getRs(), InstMemLen::WORD));
-            rt = toSigned(memory.getRegValueOfAddr(inst.getRt(), InstMemLen::WORD));
+            rs = toSigned(memory.getRegValue(inst.getRs(), InstMemLen::WORD));
+            rt = toSigned(memory.getRegValue(inst.getRt(), InstMemLen::WORD));
             rd = toUnsigned(rs + rt);
-            memory.setRegValueOfAddr(inst.getRd(), rd, InstMemLen::WORD);
+            memory.setRegValue(inst.getRd(), rd, InstMemLen::WORD);
             break;
         }
         case 0x21U: {
             // addu, rd = rs + rt
             unsigned rs, rt, rd;
-            rs = memory.getRegValueOfAddr(inst.getRs(), InstMemLen::WORD);
-            rt = memory.getRegValueOfAddr(inst.getRt(), InstMemLen::WORD);
+            rs = memory.getRegValue(inst.getRs(), InstMemLen::WORD);
+            rt = memory.getRegValue(inst.getRt(), InstMemLen::WORD);
             rd = rs + rt;
-            memory.setRegValueOfAddr(inst.getRd(), rd, InstMemLen::WORD);
+            memory.setRegValue(inst.getRd(), rd, InstMemLen::WORD);
             break;
         }
         case 0x22U: {
             // sub, rd = rs - rt
             int rs, rt;
             unsigned rd;
-            rs = toSigned(memory.getRegValueOfAddr(inst.getRs(), InstMemLen::WORD));
-            rt = toSigned(memory.getRegValueOfAddr(inst.getRt(), InstMemLen::WORD));
+            rs = toSigned(memory.getRegValue(inst.getRs(), InstMemLen::WORD));
+            rt = toSigned(memory.getRegValue(inst.getRt(), InstMemLen::WORD));
             rd = toUnsigned(rs - rt);
-            memory.setRegValueOfAddr(inst.getRd(), rd, InstMemLen::WORD);
+            memory.setRegValue(inst.getRd(), rd, InstMemLen::WORD);
             break;
         }
         case 0x24U: {
             // and, rd = rs & rt
             unsigned rs, rt, rd;
-            rs = memory.getRegValueOfAddr(inst.getRs(), InstMemLen::WORD);
-            rt = memory.getRegValueOfAddr(inst.getRt(), InstMemLen::WORD);
+            rs = memory.getRegValue(inst.getRs(), InstMemLen::WORD);
+            rt = memory.getRegValue(inst.getRt(), InstMemLen::WORD);
             rd = rs & rt;
-            memory.setRegValueOfAddr(inst.getRd(), rd, InstMemLen::WORD);
+            memory.setRegValue(inst.getRd(), rd, InstMemLen::WORD);
             break;
         }
         case 0x25U: {
             // or, rd = rs | rt
             unsigned rs, rt, rd;
-            rs = memory.getRegValueOfAddr(inst.getRs(), InstMemLen::WORD);
-            rt = memory.getRegValueOfAddr(inst.getRt(), InstMemLen::WORD);
+            rs = memory.getRegValue(inst.getRs(), InstMemLen::WORD);
+            rt = memory.getRegValue(inst.getRt(), InstMemLen::WORD);
             rd = rs | rt;
-            memory.setRegValueOfAddr(inst.getRd(), rd, InstMemLen::WORD);
+            memory.setRegValue(inst.getRd(), rd, InstMemLen::WORD);
             break;
         }
         case 0x26U: {
             // xor, rd = rs ^ rt
             unsigned rs, rt, rd;
-            rs = memory.getRegValueOfAddr(inst.getRs(), InstMemLen::WORD);
-            rt = memory.getRegValueOfAddr(inst.getRt(), InstMemLen::WORD);
+            rs = memory.getRegValue(inst.getRs(), InstMemLen::WORD);
+            rt = memory.getRegValue(inst.getRt(), InstMemLen::WORD);
             rd = rs ^ rt;
-            memory.setRegValueOfAddr(inst.getRd(), rd, InstMemLen::WORD);
+            memory.setRegValue(inst.getRd(), rd, InstMemLen::WORD);
             break;
         }
         case 0x27U: {
             // nor, rd = ~(rs | rt)
             unsigned rs, rt, rd;
-            rs = memory.getRegValueOfAddr(inst.getRs(), InstMemLen::WORD);
-            rt = memory.getRegValueOfAddr(inst.getRt(), InstMemLen::WORD);
+            rs = memory.getRegValue(inst.getRs(), InstMemLen::WORD);
+            rt = memory.getRegValue(inst.getRt(), InstMemLen::WORD);
             rd = ~(rs | rt);
-            memory.setRegValueOfAddr(inst.getRd(), rd, InstMemLen::WORD);
+            memory.setRegValue(inst.getRd(), rd, InstMemLen::WORD);
             break;
         }
         case 0x28U: {
             // nand, rd = ~(rs & rt)
             unsigned rs, rt, rd;
-            rs = memory.getRegValueOfAddr(inst.getRs(), InstMemLen::WORD);
-            rt = memory.getRegValueOfAddr(inst.getRt(), InstMemLen::WORD);
+            rs = memory.getRegValue(inst.getRs(), InstMemLen::WORD);
+            rt = memory.getRegValue(inst.getRt(), InstMemLen::WORD);
             rd = ~(rs & rt);
-            memory.setRegValueOfAddr(inst.getRd(), rd, InstMemLen::WORD);
+            memory.setRegValue(inst.getRd(), rd, InstMemLen::WORD);
             break;
         }
         case 0x2AU: {
             // slt, rd = (rs < rt)
             int rs, rt;
             unsigned rd;
-            rs = toSigned(memory.getRegValueOfAddr(inst.getRs(), InstMemLen::WORD));
-            rt = toSigned(memory.getRegValueOfAddr(inst.getRt(), InstMemLen::WORD));
+            rs = toSigned(memory.getRegValue(inst.getRs(), InstMemLen::WORD));
+            rt = toSigned(memory.getRegValue(inst.getRt(), InstMemLen::WORD));
             rd = toUnsigned(rs < rt);
-            memory.setRegValueOfAddr(inst.getRd(), rd, InstMemLen::WORD);
+            memory.setRegValue(inst.getRd(), rd, InstMemLen::WORD);
             break;
         }
         case 0x00U: {
             // sll, rd = rt << c
+            // here no need to check $zero if sll $0, $0, 0(nop)
             unsigned rd, rt, c;
-            rt = memory.getRegValueOfAddr(inst.getRt(), InstMemLen::WORD);
+            rt = memory.getRegValue(inst.getRt(), InstMemLen::WORD);
             c = inst.getC();
             rd = rt << c;
-            memory.setRegValueOfAddr(inst.getRd(), rd, InstMemLen::WORD);
+            memory.setRegValue(inst.getRd(), rd, InstMemLen::WORD);
             break;
         }
         case 0x02U: {
             // srl, rd = rt >> c
             unsigned rd, rt, c;
-            rt = memory.getRegValueOfAddr(inst.getRt(), InstMemLen::WORD);
+            rt = memory.getRegValue(inst.getRt(), InstMemLen::WORD);
             c = inst.getC();
             rd = rt >> c;
-            memory.setRegValueOfAddr(inst.getRd(), rd, InstMemLen::WORD);
+            memory.setRegValue(inst.getRd(), rd, InstMemLen::WORD);
             break;
         }
         case 0x03U: {
             // sra, rd = rt >> c(with sign bit)
             int rt, c;
             unsigned rd;
-            rt = toSigned(memory.getRegValueOfAddr(inst.getRt(), InstMemLen::WORD));
+            rt = toSigned(memory.getRegValue(inst.getRt(), InstMemLen::WORD));
             c = toSigned(inst.getC());
             rd = toUnsigned(rt >> c);
-            memory.setRegValueOfAddr(inst.getRd(), rd, InstMemLen::WORD);
+            memory.setRegValue(inst.getRd(), rd, InstMemLen::WORD);
             break;
         }
         case 0x08U: {
             // jr, pc = rs
             unsigned rs;
-            rs = memory.getRegValueOfAddr(inst.getRs(), InstMemLen::WORD);
+            rs = memory.getRegValue(inst.getRs(), InstMemLen::WORD);
             memory.setPc(rs);
             // new pc has already been set, return, not break
             return;
@@ -202,25 +218,25 @@ void InstSimulator::simulateTypeR(const InstDataBin& inst, FILE* errorDump) {
     memory.setPc(memory.getPc() + 4);
 }
 
-void InstSimulator::simulateTypeI(const InstDataBin& inst, FILE* errorDump) {
+void InstSimulator::simulateTypeI(const InstDataBin& inst) {
     switch(inst.getOpCode()) {
         case 0x08U: {
             // addi, rt = rs + c
             int rs, c;
             unsigned rt;
-            rs = toSigned(memory.getRegValueOfAddr(inst.getRs(), InstMemLen::WORD));
+            rs = toSigned(memory.getRegValue(inst.getRs(), InstMemLen::WORD));
             c = toSigned(inst.getC(), 16);
             rt = toUnsigned(rs + c);
-            memory.setRegValueOfAddr(inst.getRt(), rt, InstMemLen::WORD);
+            memory.setRegValue(inst.getRt(), rt, InstMemLen::WORD);
             break;
         }
         case 0x09U: {
             // addiu, rt = rs + c(unsigned)
             unsigned rt, rs, c;
-            rs = memory.getRegValueOfAddr(inst.getRs(), InstMemLen::WORD);
+            rs = memory.getRegValue(inst.getRs(), InstMemLen::WORD);
             c = toSigned(inst.getC(), 16);
             rt = rs + c;
-            memory.setRegValueOfAddr(inst.getRt(), rt, InstMemLen::WORD);
+            memory.setRegValue(inst.getRt(), rt, InstMemLen::WORD);
             break;
         }
         case 0x23U: {
@@ -228,11 +244,11 @@ void InstSimulator::simulateTypeI(const InstDataBin& inst, FILE* errorDump) {
             int rs, c;
             unsigned rt;
             unsigned addr;
-            rs = toSigned(memory.getRegValueOfAddr(inst.getRs(), InstMemLen::WORD));
+            rs = toSigned(memory.getRegValue(inst.getRs(), InstMemLen::WORD));
             c = toSigned(inst.getC(), 16);
             addr = toUnsigned(rs + c);
-            rt = memory.getMemValueOfAddr(addr, InstMemLen::WORD);
-            memory.setRegValueOfAddr(inst.getRt(), rt, InstMemLen::WORD);
+            rt = memory.getMemValue(addr, InstMemLen::WORD);
+            memory.setRegValue(inst.getRt(), rt, InstMemLen::WORD);
             break;
         }
         case 0x21U: {
@@ -240,12 +256,12 @@ void InstSimulator::simulateTypeI(const InstDataBin& inst, FILE* errorDump) {
             int rs, c;
             unsigned rt;
             unsigned addr;
-            rs = toSigned(memory.getRegValueOfAddr(inst.getRs(), InstMemLen::WORD));
+            rs = toSigned(memory.getRegValue(inst.getRs(), InstMemLen::WORD));
             c = toSigned(inst.getC(), 16);
             addr = toUnsigned(rs + c);
-            rt = memory.getMemValueOfAddr(addr, InstMemLen::HALFWORD);
+            rt = memory.getMemValue(addr, InstMemLen::HALFWORD);
             rt = toSigned(rt, InstMemLen::HALFWORD);
-            memory.setRegValueOfAddr(inst.getRt(), rt, InstMemLen::WORD);
+            memory.setRegValue(inst.getRt(), rt, InstMemLen::WORD);
             break;
         }
         case 0x25U: {
@@ -253,11 +269,11 @@ void InstSimulator::simulateTypeI(const InstDataBin& inst, FILE* errorDump) {
             int rs, c;
             unsigned rt;
             unsigned addr;
-            rs = toSigned(memory.getRegValueOfAddr(inst.getRs(), InstMemLen::WORD));
+            rs = toSigned(memory.getRegValue(inst.getRs(), InstMemLen::WORD));
             c = toSigned(inst.getC(), 16);
             addr = toUnsigned(rs + c);
-            rt = memory.getMemValueOfAddr(addr, InstMemLen::HALFWORD);
-            memory.setRegValueOfAddr(inst.getRt(), rt, InstMemLen::WORD);
+            rt = memory.getMemValue(addr, InstMemLen::HALFWORD);
+            memory.setRegValue(inst.getRt(), rt, InstMemLen::WORD);
             break;
         }
         case 0x20U: {
@@ -265,12 +281,12 @@ void InstSimulator::simulateTypeI(const InstDataBin& inst, FILE* errorDump) {
             int rs, c;
             unsigned rt;
             unsigned addr;
-            rs = toSigned(memory.getRegValueOfAddr(inst.getRs(), InstMemLen::WORD));
+            rs = toSigned(memory.getRegValue(inst.getRs(), InstMemLen::WORD));
             c = toSigned(inst.getC(), 16);
             addr = toUnsigned(rs + c);
-            rt = memory.getMemValueOfAddr(addr, InstMemLen::BYTE);
+            rt = memory.getMemValue(addr, InstMemLen::BYTE);
             rt = toSigned(rt, InstMemLen::BYTE);
-            memory.setRegValueOfAddr(inst.getRt(), rt, InstMemLen::WORD);
+            memory.setRegValue(inst.getRt(), rt, InstMemLen::WORD);
             break;
         }
         case 0x24U: {
@@ -278,11 +294,11 @@ void InstSimulator::simulateTypeI(const InstDataBin& inst, FILE* errorDump) {
             int rs, c;
             unsigned rt;
             unsigned addr;
-            rs = toSigned(memory.getRegValueOfAddr(inst.getRs(), InstMemLen::WORD));
+            rs = toSigned(memory.getRegValue(inst.getRs(), InstMemLen::WORD));
             c = toSigned(inst.getC(), 16);
             addr = toUnsigned(rs + c);
-            rt = memory.getMemValueOfAddr(addr, InstMemLen::BYTE);
-            memory.setRegValueOfAddr(inst.getRt(), rt, InstMemLen::WORD);
+            rt = memory.getMemValue(addr, InstMemLen::BYTE);
+            memory.setRegValue(inst.getRt(), rt, InstMemLen::WORD);
             break;
         }
         case 0x2BU: {
@@ -290,11 +306,11 @@ void InstSimulator::simulateTypeI(const InstDataBin& inst, FILE* errorDump) {
             int rs, c;
             unsigned rt;
             unsigned addr;
-            rs = toSigned(memory.getRegValueOfAddr(inst.getRs(), InstMemLen::WORD));
+            rs = toSigned(memory.getRegValue(inst.getRs(), InstMemLen::WORD));
             c = toSigned(inst.getC(), 16);
             addr = toUnsigned(rs + c);
-            rt = memory.getRegValueOfAddr(inst.getRt(), InstMemLen::WORD);
-            memory.setMemValueOfAddr(addr, rt, InstMemLen::WORD);
+            rt = memory.getRegValue(inst.getRt(), InstMemLen::WORD);
+            memory.setMemValue(addr, rt, InstMemLen::WORD);
             break;
         }
         case 0x29U: {
@@ -302,75 +318,75 @@ void InstSimulator::simulateTypeI(const InstDataBin& inst, FILE* errorDump) {
             int rs, c;
             unsigned rt;
             unsigned addr;
-            rs = toSigned(memory.getRegValueOfAddr(inst.getRs(), InstMemLen::WORD));
+            rs = toSigned(memory.getRegValue(inst.getRs(), InstMemLen::WORD));
             c = toSigned(inst.getC(), 16);
             addr = toUnsigned(rs + c);
-            rt = memory.getRegValueOfAddr(inst.getRt(), InstMemLen::WORD);
-            memory.setMemValueOfAddr(addr, rt, InstMemLen::HALFWORD);
+            rt = memory.getRegValue(inst.getRt(), InstMemLen::WORD);
+            memory.setMemValue(addr, rt, InstMemLen::HALFWORD);
             break;
         }
         case 0x28U: {
-            // sb
+            // sb, mem[rs + c] = rt, 1 byte
             int rs, c;
             unsigned rt;
             unsigned addr;
-            rs = toSigned(memory.getRegValueOfAddr(inst.getRs(), InstMemLen::WORD));
+            rs = toSigned(memory.getRegValue(inst.getRs(), InstMemLen::WORD));
             c = toSigned(inst.getC(), 16);
             addr = toUnsigned(rs + c);
-            rt = memory.getRegValueOfAddr(inst.getRt(), InstMemLen::WORD);
-            memory.setMemValueOfAddr(addr, rt, InstMemLen::BYTE);
+            rt = memory.getRegValue(inst.getRt(), InstMemLen::WORD);
+            memory.setMemValue(addr, rt, InstMemLen::BYTE);
             break;
         }
         case 0x0FU: {
             // lui, rt = c << 16
             unsigned rt;
             rt = inst.getC() << 16;
-            memory.setRegValueOfAddr(inst.getRt(), rt, InstMemLen::WORD);
+            memory.setRegValue(inst.getRt(), rt, InstMemLen::WORD);
             break;
         }
         case 0x0CU: {
             // andi, rt = rs & c
             unsigned rt, rs, c;
-            rs = memory.getRegValueOfAddr(inst.getRs(), InstMemLen::WORD);
+            rs = memory.getRegValue(inst.getRs(), InstMemLen::WORD);
             c = inst.getC();
             rt = rs & c;
-            memory.setRegValueOfAddr(inst.getRt(), rt, InstMemLen::WORD);
+            memory.setRegValue(inst.getRt(), rt, InstMemLen::WORD);
             break;
         }
         case 0x0DU: {
             // ori, rt = rs | c
             unsigned rt, rs, c;
-            rs = memory.getRegValueOfAddr(inst.getRs(), InstMemLen::WORD);
+            rs = memory.getRegValue(inst.getRs(), InstMemLen::WORD);
             c = inst.getC();
             rt = rs | c;
-            memory.setRegValueOfAddr(inst.getRt(), rt, InstMemLen::WORD);
+            memory.setRegValue(inst.getRt(), rt, InstMemLen::WORD);
             break;
         }
         case 0x0EU: {
             // nori, rt = ~(rs | c)
             unsigned rt, rs, c;
-            rs = memory.getRegValueOfAddr(inst.getRs(), InstMemLen::WORD);
+            rs = memory.getRegValue(inst.getRs(), InstMemLen::WORD);
             c = inst.getC();
             rt = ~(rs | c);
-            memory.setRegValueOfAddr(inst.getRt(), rt, InstMemLen::WORD);
+            memory.setRegValue(inst.getRt(), rt, InstMemLen::WORD);
             break;
         }
         case 0x0AU: {
             // slti, rt = (rs < c(signed))
             int rs, c;
             unsigned rt;
-            rs = toSigned(memory.getRegValueOfAddr(inst.getRs(), InstMemLen::WORD));
+            rs = toSigned(memory.getRegValue(inst.getRs(), InstMemLen::WORD));
             c = toSigned(inst.getC(), 16);
             rt = toUnsigned(rs < c);
-            memory.setRegValueOfAddr(inst.getRt(), rt, InstMemLen::WORD);
+            memory.setRegValue(inst.getRt(), rt, InstMemLen::WORD);
             break;
         }
         case 0x04U: {
             // beq, if (rs == rt), go to (pc + 4 + 4 * c(signed))
             unsigned rs, rt;
             int c;
-            rs = memory.getRegValueOfAddr(inst.getRs(), InstMemLen::WORD);
-            rt = memory.getRegValueOfAddr(inst.getRt(), InstMemLen::WORD);
+            rs = memory.getRegValue(inst.getRs(), InstMemLen::WORD);
+            rt = memory.getRegValue(inst.getRt(), InstMemLen::WORD);
             c = toSigned(inst.getC(), 16);
             unsigned result = toSigned(rs) == toSigned(rt);
             if (result == 1U) {
@@ -383,8 +399,8 @@ void InstSimulator::simulateTypeI(const InstDataBin& inst, FILE* errorDump) {
             // bne, if (rs != rt), go to (pc + 4 + 4 * c(signed))
             unsigned rs, rt;
             int c;
-            rs = memory.getRegValueOfAddr(inst.getRs(), InstMemLen::WORD);
-            rt = memory.getRegValueOfAddr(inst.getRt(), InstMemLen::WORD);
+            rs = memory.getRegValue(inst.getRs(), InstMemLen::WORD);
+            rt = memory.getRegValue(inst.getRt(), InstMemLen::WORD);
             c = toSigned(inst.getC(), 16);
             unsigned result = toSigned(rs) != toSigned(rt);
             if (result == 1U) {
@@ -397,7 +413,7 @@ void InstSimulator::simulateTypeI(const InstDataBin& inst, FILE* errorDump) {
             // bgtz, if (rs > 0), go to (pc + 4 + 4 * c(signed))
             int rs;
             int c;
-            rs = toSigned(memory.getRegValueOfAddr(inst.getRs(), InstMemLen::WORD));
+            rs = toSigned(memory.getRegValue(inst.getRs(), InstMemLen::WORD));
             c = toSigned(inst.getC(), 16);
             unsigned rt = toUnsigned(rs > 0);
             if (rt == 1U) {
@@ -414,7 +430,7 @@ void InstSimulator::simulateTypeI(const InstDataBin& inst, FILE* errorDump) {
     memory.setPc(memory.getPc() + 4);
 }
 
-void InstSimulator::simulateTypeJ(const InstDataBin& inst, FILE* errorDump) {
+void InstSimulator::simulateTypeJ(const InstDataBin& inst) {
     switch (inst.getOpCode()) {
         case 0x02: {
             // j, pc = (pc + 4)[31:28] | 4 * c(unsigned)
@@ -426,13 +442,180 @@ void InstSimulator::simulateTypeJ(const InstDataBin& inst, FILE* errorDump) {
         case 0x03: {
             // jal, $31 = pc + 4
             //      pc = (pc + 4)[31:28] | 4 * c(unsigned)
-            memory.setRegValueOfAddr(31, memory.getPc() + 4, InstMemLen::WORD);
+            memory.setRegValue(31, memory.getPc() + 4, InstMemLen::WORD);
             unsigned c = inst.getC();
             unsigned pc = (getBitsInRange(memory.getPc() + 4, 28, 32) << 28) | (c << 2);
             memory.setPc(pc);
             break;
         }
     }
+}
+
+void InstSimulator::checkInst(const InstDataBin& inst) {
+    if (inst.getType() == InstType::R) {
+        // write $0 error
+        if (inst.getFunct() != 0x08U) { // jr
+            detectRegWriteZero(inst.getRd());
+        }
+        // number overflow
+        if (inst.getFunct() == 0x20U) { // add
+            int rs, rt;
+            rs = toSigned(memory.getRegValue(inst.getRs(), InstMemLen::WORD));
+            rt = toSigned(memory.getRegValue(inst.getRt(), InstMemLen::WORD));
+            detectNumberOverflow(rs, rt, InstOpType::ADD);
+        }
+        if (inst.getFunct() == 0x22U) { // sub
+            int rs, rt;
+            rs = toSigned(memory.getRegValue(inst.getRs(), InstMemLen::WORD));
+            rt = toSigned(memory.getRegValue(inst.getRt(), InstMemLen::WORD));
+            detectNumberOverflow(rs, rt, InstOpType::SUB);
+        }
+    }
+    else if (inst.getType() == InstType::I) {
+        // write $0 error
+        if (inst.getOpCode() != 0x2BU && // sw
+            inst.getOpCode() != 0x29U && // sh
+            inst.getOpCode() != 0x28U && // sb
+            inst.getOpCode() != 0x04U && // beq
+            inst.getOpCode() != 0x05U && // bne
+            inst.getOpCode() != 0x07U) { // bgtz
+            detectRegWriteZero(inst.getRt());
+        }
+        // number overflow
+        if (inst.getOpCode() == 0x08U || // addi
+            inst.getOpCode() == 0x23U || // lw
+            inst.getOpCode() == 0x21U || // lh
+            inst.getOpCode() == 0x25U || // lhu
+            inst.getOpCode() == 0x20U || // lb
+            inst.getOpCode() == 0x24U || // lbu
+            inst.getOpCode() == 0x2BU || // sw
+            inst.getOpCode() == 0x29U || // sh
+            inst.getOpCode() == 0x28U) { // sb
+            int rs, c;
+            rs = toSigned(memory.getRegValue(inst.getRs(), InstMemLen::WORD));
+            c = toSigned(inst.getC(), 16);
+            detectNumberOverflow(rs, c, InstOpType::ADD);
+        }
+        // Address Memory overflow
+        if (inst.getOpCode() == 0x23U || // lw
+            inst.getOpCode() == 0x21U || // lh
+            inst.getOpCode() == 0x25U || // lhu
+            inst.getOpCode() == 0x20U || // lb
+            inst.getOpCode() == 0x24U || // lbu
+            inst.getOpCode() == 0x2BU || // sw
+            inst.getOpCode() == 0x29U || // sh
+            inst.getOpCode() == 0x28U) { // sb
+            int rs, c;
+            rs = toSigned(memory.getRegValue(inst.getRs(), InstMemLen::WORD));
+            c = toSigned(inst.getC(), 16);
+            detectMemAddrOverflow(toUnsigned(rs + c));
+        }
+        // Data misaligned
+        switch (inst.getOpCode()) {
+            case 0x23U: {
+                // lw
+                int rs, c;
+                rs = toSigned(memory.getRegValue(inst.getRs(), InstMemLen::WORD));
+                c = toSigned(inst.getC(), 16);
+                detectDataMisaligned(toUnsigned(rs + c), InstMemLen::WORD);
+                break;
+            }
+            case 0x21U: {
+                // lh
+                int rs, c;
+                rs = toSigned(memory.getRegValue(inst.getRs(), InstMemLen::WORD));
+                c = toSigned(inst.getC(), 16);
+                detectDataMisaligned(toUnsigned(rs + c), InstMemLen::HALFWORD);
+                break;
+            }
+            case 0x25u: {
+                // lhu
+                int rs, c;
+                rs = toSigned(memory.getRegValue(inst.getRs(), InstMemLen::WORD));
+                c = toSigned(inst.getC(), 16);
+                detectDataMisaligned(toUnsigned(rs + c), InstMemLen::HALFWORD);
+                break;
+            }
+            case 0x20u: {
+                // lb
+                int rs, c;
+                rs = toSigned(memory.getRegValue(inst.getRs(), InstMemLen::WORD));
+                c = toSigned(inst.getC(), 16);
+                detectDataMisaligned(toUnsigned(rs + c), InstMemLen::BYTE);
+                break;
+            }
+            case 0x24u: {
+                // lbu
+                int rs, c;
+                rs = toSigned(memory.getRegValue(inst.getRs(), InstMemLen::WORD));
+                c = toSigned(inst.getC(), 16);
+                detectDataMisaligned(toUnsigned(rs + c), InstMemLen::BYTE);
+                break;
+            }
+            case 0x2Bu: {
+                // sw
+                int rs, c;
+                rs = toSigned(memory.getRegValue(inst.getRs(), InstMemLen::WORD));
+                c = toSigned(inst.getC(), 16);
+                detectDataMisaligned(toUnsigned(rs + c), InstMemLen::WORD);
+                break;
+            }
+            case 0x29u: {
+                // sh
+                int rs, c;
+                rs = toSigned(memory.getRegValue(inst.getRs(), InstMemLen::WORD));
+                c = toSigned(inst.getC(), 16);
+                detectDataMisaligned(toUnsigned(rs + c), InstMemLen::HALFWORD);
+                break;
+            }
+            case 0x28u: {
+                // sb
+                int rs, c;
+                rs = toSigned(memory.getRegValue(inst.getRs(), InstMemLen::WORD));
+                c = toSigned(inst.getC(), 16);
+                detectDataMisaligned(toUnsigned(rs + c), InstMemLen::BYTE);
+                break;
+            }
+        }
+    }
+    else if (inst.getType() == InstType::J) {
+        return;
+    }
+    else {
+        return;
+    }
+}
+
+InstAction InstSimulator::detectRegWriteZero(const unsigned& addr) {
+    if (!InstErrorDetector::isRegWritable(addr)) {
+        fprintf(errorDump, "In cycle %d: Write $0 Error\n", cycle);
+    }
+    return InstAction::CONTINUE;
+}
+
+InstAction InstSimulator::detectNumberOverflow(const int& a, const int& b, const InstOpType& op) {
+    if (InstErrorDetector::isOverflowed(a, b, op)) {
+        fprintf(errorDump, "In cycle %d: Number Overflow\n", cycle);
+    }
+    return InstAction::CONTINUE;
+}
+
+InstAction InstSimulator::detectMemAddrOverflow(const unsigned& addr) {
+    if (!InstErrorDetector::isValidMemoryAddr(addr)) {
+        fprintf(errorDump, "In cycle %d: Address Overflow\n", cycle);
+        isAlive = false;
+        return InstAction::HALT;
+    }
+    return InstAction::CONTINUE;
+}
+
+InstAction InstSimulator::detectDataMisaligned(const unsigned& addr, const InstMemLen& type) {
+    if (!InstErrorDetector::isAlignedAddr(addr, type)) {
+        fprintf(errorDump, "In cycle %d: Misalignment Error\n", cycle);
+        isAlive = false;
+        return InstAction::HALT;
+    }
+    return InstAction::CONTINUE;
 }
 
 } /* namespace LB */
