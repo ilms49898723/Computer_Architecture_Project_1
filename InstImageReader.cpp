@@ -9,7 +9,7 @@
 
 namespace LB {
 
-unsigned InstImageReader::readImageI(FILE* iimage, unsigned char* dst, unsigned* pc) {
+unsigned InstImageReader::readImageI(FILE* iimage, unsigned* dst, unsigned* pc) {
     unsigned readPc = readWordFromBin(iimage);
     unsigned len = readWordFromBin(iimage);
     unsigned wordRead = 0;
@@ -20,7 +20,7 @@ unsigned InstImageReader::readImageI(FILE* iimage, unsigned char* dst, unsigned*
     return wordRead;
 }
 
-unsigned InstImageReader::readImageD(FILE* dimage, unsigned char* dst, unsigned* sp) {
+unsigned InstImageReader::readImageD(FILE* dimage, unsigned* dst, unsigned* sp) {
     unsigned readSp = readWordFromBin(dimage);
     unsigned len = readWordFromBin(dimage);
     unsigned wordRead = 0;
