@@ -13,10 +13,6 @@ bool InstErrorDetector::isRegWritable(const unsigned& reg) {
     return reg != 0U;
 }
 
-bool InstErrorDetector::isValidMemoryAddr(const unsigned& addr) {
-    return addr >= 0U && addr < 1024U;
-}
-
 bool InstErrorDetector::isOverflowed(const int& src0, const int& src1, const InstOpType& op) {
     int a = src0;
     int b = src1;
@@ -24,13 +20,17 @@ bool InstErrorDetector::isOverflowed(const int& src0, const int& src1, const Ins
         b *= (-1);
     }
     int result = a + b;
-    int signA = (a > 0) ? 1 : -1;
-    int signB = (b > 0) ? 1 : -1;
-    int signR = (result > 0) ? 1 : -1;
+    int signA = (a >= 0) ? 1 : -1;
+    int signB = (b >= 0) ? 1 : -1;
+    int signR = (result >= 0) ? 1 : -1;
     if (signA * signB < 0) {
         return false;
     }
     return signA * signR < 0;
+}
+
+bool InstErrorDetector::isValidMemoryAddr(const unsigned& addr) {
+    return addr >= 0U && addr < 1024U;
 }
 
 bool InstErrorDetector::isAlignedAddr(const unsigned& addr, const InstMemLen& type) {

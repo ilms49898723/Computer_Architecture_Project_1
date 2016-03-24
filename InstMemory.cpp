@@ -34,13 +34,13 @@ bool InstMemory::isValidAddress(const std::string& opCode, const unsigned& addr)
 }
 
 InstMemory::InstMemory() {
-    initalizePc = pc = 0U;
+    initialPc = pc = 0U;
     memset(reg, 0, sizeof(unsigned) * 32);
     memset(mem, 0, sizeof(unsigned char) * 1024);
 }
 
 InstMemory::InstMemory(const unsigned& initPc) {
-    initalizePc = pc = initPc;
+    initialPc = pc = initPc;
     memset(reg, 0, sizeof(unsigned) * 32);
     memset(mem, 0, sizeof(unsigned char) * 1024);
 }
@@ -54,7 +54,7 @@ void InstMemory::init(const unsigned& initPc) {
     memset(mem, 0, sizeof(unsigned char) * 1024);
 }
 
-unsigned InstMemory::getRegValueOfAddr(const unsigned& addr, const InstMemLen& type) {
+unsigned InstMemory::getRegValue(const unsigned& addr, const InstMemLen& type) {
     if (type == InstMemLen::WORD) {
         return reg[addr];
     }
@@ -66,7 +66,7 @@ unsigned InstMemory::getRegValueOfAddr(const unsigned& addr, const InstMemLen& t
     }
 }
 
-void InstMemory::setRegValueOfAddr(const unsigned& addr, const unsigned& val, const InstMemLen& type) {
+void InstMemory::setRegValue(const unsigned& addr, const unsigned& val, const InstMemLen& type) {
     if (addr == 0U) {
         return;
     }
@@ -81,7 +81,7 @@ void InstMemory::setRegValueOfAddr(const unsigned& addr, const unsigned& val, co
     }
 }
 
-unsigned InstMemory::getMemValueOfAddr(const unsigned& addr, const InstMemLen& type) {
+unsigned InstMemory::getMemValue(const unsigned& addr, const InstMemLen& type) {
     if (type == InstMemLen::WORD) {
         return (mem[addr] << 24) | (mem[addr + 1] << 16) | (mem[addr + 2] << 8) | mem[addr + 3];
     }
@@ -93,7 +93,7 @@ unsigned InstMemory::getMemValueOfAddr(const unsigned& addr, const InstMemLen& t
     }
 }
 
-void InstMemory::setMemValueOfAddr(const unsigned& addr, const unsigned& val, const InstMemLen& type) {
+void InstMemory::setMemValue(const unsigned& addr, const unsigned& val, const InstMemLen& type) {
     if (type == InstMemLen::WORD) {
         mem[addr] = static_cast<unsigned char>((val >> 24) & 0xFFU);
         mem[addr + 1] = static_cast<unsigned char>((val >> 16) & 0xFFU);
@@ -118,11 +118,11 @@ void InstMemory::setPc(const unsigned& val) {
 }
 
 unsigned InstMemory::getInitPc() {
-    return initalizePc;
+    return initialPc;
 }
 
-void InstMemory::setInitlizePc(const unsigned& val) {
-    initalizePc = val;
+void InstMemory::setInitialPc(const unsigned& val) {
+    initialPc = val;
 }
 
 } /* namespace LB */

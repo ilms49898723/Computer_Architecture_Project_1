@@ -28,13 +28,13 @@ public:
     // initialize with pc(default = 0)
     void init(const unsigned& initPc = 0U);
     // get reg value at addr
-    unsigned getRegValueOfAddr(const unsigned& addr, const InstMemLen& type);
+    unsigned getRegValue(const unsigned& addr, const InstMemLen& type);
     // set reg value to addr
-    void setRegValueOfAddr(const unsigned& addr, const unsigned& val, const InstMemLen& type);
+    void setRegValue(const unsigned& addr, const unsigned& val, const InstMemLen& type);
     // get memory value at addr, return as unsigned
-    unsigned getMemValueOfAddr(const unsigned& addr, const InstMemLen& type);
+    unsigned getMemValue(const unsigned& addr, const InstMemLen& type);
     // set memory value at addr, parameter all passed as unsigned
-    void setMemValueOfAddr(const unsigned& addr, const unsigned& val, const InstMemLen& type);
+    void setMemValue(const unsigned& addr, const unsigned& val, const InstMemLen& type);
     // get pc
     unsigned getPc();
     // set pc
@@ -42,13 +42,13 @@ public:
     // get initializePc
     unsigned getInitPc();
     // set initializePc
-    void setInitlizePc(const unsigned& val);
+    void setInitialPc(const unsigned& val);
 
 private:
     unsigned char mem[1024];
     unsigned reg[32];
     unsigned pc;
-    unsigned initalizePc;
+    unsigned initialPc;
 };
 
 } /* namespace LB */
