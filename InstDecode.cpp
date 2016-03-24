@@ -82,7 +82,7 @@ InstDataStr InstDecode::decodeInstStr(const unsigned* src) {
     return InstDecode::decodeInstStr(argu);
 }
 
-InstDataBin InstDecode::decodeInstBin(const unsigned & src) {
+InstDataBin InstDecode::decodeInstBin(const unsigned& src) {
     unsigned opCode;
     unsigned rs, rt, rd;
     unsigned c;
@@ -100,6 +100,7 @@ InstDataBin InstDecode::decodeInstBin(const unsigned & src) {
         rd = getBitsInRange(src, 11, 16);
         c = getBitsInRange(src, 6, 11);
         InstDataBin ret;
+        ret.setInst(src);
         ret.setType(InstType::R);
         ret.setOpCode(opCode);
         ret.setRs(rs);
@@ -112,6 +113,7 @@ InstDataBin InstDecode::decodeInstBin(const unsigned & src) {
     else if (opCode == 0x02u || opCode == 0x03u) {
         c = getBitsInRange(src, 0, 26);
         InstDataBin ret;
+        ret.setInst(src);
         ret.setType(InstType::J);
         ret.setOpCode(opCode);
         ret.setC(c);
@@ -120,6 +122,7 @@ InstDataBin InstDecode::decodeInstBin(const unsigned & src) {
     else if (opCode == 0x3Fu) {
         opCodeStr = InstLookUp::opCodeLookUp(opCode);
         InstDataBin ret;
+        ret.setInst(src);
         ret.setType(InstType::S);
         ret.setOpCode(opCode);
         return ret;
@@ -129,6 +132,7 @@ InstDataBin InstDecode::decodeInstBin(const unsigned & src) {
         rt = getBitsInRange(src, 16, 21);
         c = getBitsInRange(src, 0, 16);
         InstDataBin ret;
+        ret.setInst(src);
         ret.setType(InstType::I);
         ret.setOpCode(opCode);
         ret.setRs(rs);
