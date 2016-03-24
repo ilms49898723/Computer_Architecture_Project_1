@@ -11,7 +11,7 @@ namespace LB {
 
 InstDataBin::InstDataBin() {
     type = InstType::Undef;
-    opCode = rs = rt = rd = c = funct = 0U;
+    opCode = rs = rt = rd = c = funct = 0u;
 }
 
 InstDataBin::~InstDataBin() {

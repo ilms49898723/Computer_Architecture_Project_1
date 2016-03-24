@@ -10,7 +10,7 @@
 namespace LB {
 
 bool InstErrorDetector::isRegWritable(const unsigned& reg) {
-    return reg != 0U;
+    return reg != 0u;
 }
 
 bool InstErrorDetector::isOverflowed(const int& src0, const int& src1, const InstOpType& op) {
@@ -30,14 +30,14 @@ bool InstErrorDetector::isOverflowed(const int& src0, const int& src1, const Ins
 }
 
 bool InstErrorDetector::isValidMemoryAddr(const unsigned& addr) {
-    return addr >= 0U && addr < 1024U;
+    return addr >= 0u && addr < 1024u;
 }
 
 bool InstErrorDetector::isAlignedAddr(const unsigned& addr, const InstMemLen& type) {
     if (type == InstMemLen::WORD) {
         return (addr % 4) == 0;
     }
-    else if (type == InstMemLen::HALFWORD) {
+    else if (type == InstMemLen::HALF) {
         return (addr & 1) == 0;
     }
     else {

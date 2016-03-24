@@ -17,7 +17,7 @@ int toSigned(const unsigned& src, const InstMemLen& type) {
     if (type == InstMemLen::WORD) {
         return static_cast<int>(src);
     }
-    else if (type == InstMemLen::HALFWORD) {
+    else if (type == InstMemLen::HALF) {
         int var = static_cast<int>(src << 16);
         int ret = var >> 16;
         return ret;

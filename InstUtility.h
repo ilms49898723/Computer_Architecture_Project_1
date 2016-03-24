@@ -36,7 +36,7 @@ enum class InstType : unsigned {
 // HALFWORD: 2 bytes
 // BYTE: 1 byte
 enum class InstMemLen : unsigned {
-    WORD, HALFWORD, BYTE
+    WORD, HALF, BYTE
 };
 
 template<typename Tp>

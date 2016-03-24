@@ -10,7 +10,7 @@
 namespace LB {
 
 const std::string InstLookUp::opCodeLookUpTable[] = {
-        "R-Type",   // 0x00
+        "R-Type", // 0x00
         "undef",
         "j",
         "jal",
@@ -138,31 +138,31 @@ const std::string InstLookUp::registerLookUpTable[] = {
 };
 
 std::string InstLookUp::opCodeLookUp(const unsigned& src) {
-    if (src == 0x3F) {
+    if (src == 0x3Fu) {
         return "halt";
     }
-    if (src > 0x2B) {
+    if (src > 0x2Bu) {
         return "undef";
     }
     return InstLookUp::opCodeLookUpTable[src];
 }
 
 std::string InstLookUp::functLookUp(const unsigned& src) {
-    if (src > 0x30) {
+    if (src > 0x30u) {
         return "undef";
     }
     return InstLookUp::functLookUpTable[src];
 }
 
 std::string InstLookUp::registerLookUpNumber(const unsigned& src) {
-    if (src > 0x1F) {
+    if (src > 0x1Fu) {
         return "undef";
     }
     return toString(src);
 }
 
 std::string InstLookUp::registerLookUpName(const unsigned& src) {
-    if (src > 0x1F) {
+    if (src > 0x1Fu) {
         return "undef";
     }
     return InstLookUp::registerLookUpTable[src];

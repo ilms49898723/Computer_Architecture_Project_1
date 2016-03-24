@@ -10,10 +10,10 @@
 namespace LB {
 
 bool InstMemory::isValidAddress(const unsigned& opCode, const unsigned& addr) {
-    if (opCode == 0x23U || opCode == 0x2B) {
+    if (opCode == 0x23u || opCode == 0x2Bu) {
         return (addr % 4) == 0;
     }
-    else if (opCode == 0x21U || opCode == 0x25U || opCode == 0x29U) {
+    else if (opCode == 0x21u || opCode == 0x25u || opCode == 0x29u) {
         return (addr & 1) == 0;
     }
     else {
@@ -34,7 +34,7 @@ bool InstMemory::isValidAddress(const std::string& opCode, const unsigned& addr)
 }
 
 InstMemory::InstMemory() {
-    initialPc = pc = 0U;
+    initialPc = pc = 0u;
     memset(reg, 0, sizeof(unsigned) * 32);
     memset(mem, 0, sizeof(unsigned char) * 1024);
 }
@@ -58,26 +58,26 @@ unsigned InstMemory::getRegValue(const unsigned& addr, const InstMemLen& type) {
     if (type == InstMemLen::WORD) {
         return reg[addr];
     }
-    else if (type == InstMemLen::HALFWORD) {
-        return reg[addr] & 0x0000FFFFU;
+    else if (type == InstMemLen::HALF) {
+        return reg[addr] & 0x0000FFFFu;
     }
     else {
-        return reg[addr] & 0x000000FFU;
+        return reg[addr] & 0x000000FFu;
     }
 }
 
 void InstMemory::setRegValue(const unsigned& addr, const unsigned& val, const InstMemLen& type) {
-    if (addr == 0U) {
+    if (addr == 0u) {
         return;
     }
     if (type == InstMemLen::WORD) {
         reg[addr] = val;
     }
-    else if (type == InstMemLen::HALFWORD) {
-        reg[addr] = val & 0x0000FFFFU;
+    else if (type == InstMemLen::HALF) {
+        reg[addr] = val & 0x0000FFFFu;
     }
     else {
-        reg[addr] = val & 0x000000FFU;
+        reg[addr] = val & 0x000000FFu;
     }
 }
 
@@ -85,7 +85,7 @@ unsigned InstMemory::getMemValue(const unsigned& addr, const InstMemLen& type) {
     if (type == InstMemLen::WORD) {
         return (mem[addr] << 24) | (mem[addr + 1] << 16) | (mem[addr + 2] << 8) | mem[addr + 3];
     }
-    else if (type == InstMemLen::HALFWORD) {
+    else if (type == InstMemLen::HALF) {
         return (mem[addr] << 8) | (mem[addr + 1]);
     }
     else {
@@ -95,17 +95,17 @@ unsigned InstMemory::getMemValue(const unsigned& addr, const InstMemLen& type) {
 
 void InstMemory::setMemValue(const unsigned& addr, const unsigned& val, const InstMemLen& type) {
     if (type == InstMemLen::WORD) {
-        mem[addr] = static_cast<unsigned char>((val >> 24) & 0xFFU);
-        mem[addr + 1] = static_cast<unsigned char>((val >> 16) & 0xFFU);
-        mem[addr + 2] = static_cast<unsigned char>((val >> 8) & 0xFFU);
-        mem[addr + 3] = static_cast<unsigned char>(val & 0xFFU);
+        mem[addr] = static_cast<unsigned char>((val >> 24) & 0xFFu);
+        mem[addr + 1] = static_cast<unsigned char>((val >> 16) & 0xFFu);
+        mem[addr + 2] = static_cast<unsigned char>((val >> 8) & 0xFFu);
+        mem[addr + 3] = static_cast<unsigned char>(val & 0xFFu);
     }
-    else if (type == InstMemLen::HALFWORD) {
-        mem[addr] = static_cast<unsigned char>((val >> 8) & 0xFFU);
-        mem[addr + 1] = static_cast<unsigned char>(val & 0xFFU);
+    else if (type == InstMemLen::HALF) {
+        mem[addr] = static_cast<unsigned char>((val >> 8) & 0xFFu);
+        mem[addr + 1] = static_cast<unsigned char>(val & 0xFFu);
     }
     else {
-        mem[addr] = static_cast<unsigned char>(val & 0xFFU);
+        mem[addr] = static_cast<unsigned char>(val & 0xFFu);
     }
 }
 

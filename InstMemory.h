@@ -26,7 +26,7 @@ public:
     InstMemory(const unsigned& initPc);
     virtual ~InstMemory();
     // initialize with pc(default = 0)
-    void init(const unsigned& initPc = 0U);
+    void init(const unsigned& initPc = 0u);
     // get reg value at addr
     unsigned getRegValue(const unsigned& addr, const InstMemLen& type);
     // set reg value to addr

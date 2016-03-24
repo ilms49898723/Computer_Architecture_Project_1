@@ -23,7 +23,7 @@ InstDataStr InstDecode::decodeInstStr(const unsigned& src) {
     if (opCodeStr == "undef") {
         return InstDataStr();
     }
-    else if (opCode == 0x0U) {
+    else if (opCode == 0x0u) {
         funct = getBitsInRange(src, 0, 6);
         rs = getBitsInRange(src, 21, 26);
         rt = getBitsInRange(src, 16, 21);
@@ -44,7 +44,7 @@ InstDataStr InstDecode::decodeInstStr(const unsigned& src) {
         ret.setFunct(functStr);
         return ret;
     }
-    else if (opCode == 0x02U || opCode == 0x03U) {
+    else if (opCode == 0x02u || opCode == 0x03u) {
         c = getBitsInRange(src, 0, 26);
         cStr = toHexString(c);
         InstDataStr ret;
@@ -53,7 +53,7 @@ InstDataStr InstDecode::decodeInstStr(const unsigned& src) {
         ret.setC(cStr);
         return ret;
     }
-    else if (opCode == 0x3FU) {
+    else if (opCode == 0x3Fu) {
         opCodeStr = InstLookUp::opCodeLookUp(opCode);
         InstDataStr ret;
         ret.setType(InstType::S);
@@ -93,7 +93,7 @@ InstDataBin InstDecode::decodeInstBin(const unsigned & src) {
     if (opCodeStr == "undef") {
         return InstDataBin();
     }
-    else if (opCode == 0x0U) {
+    else if (opCode == 0x0u) {
         funct = getBitsInRange(src, 0, 6);
         rs = getBitsInRange(src, 21, 26);
         rt = getBitsInRange(src, 16, 21);
@@ -109,7 +109,7 @@ InstDataBin InstDecode::decodeInstBin(const unsigned & src) {
         ret.setFunct(funct);
         return ret;
     }
-    else if (opCode == 0x02U || opCode == 0x03U) {
+    else if (opCode == 0x02u || opCode == 0x03u) {
         c = getBitsInRange(src, 0, 26);
         InstDataBin ret;
         ret.setType(InstType::J);
@@ -117,7 +117,7 @@ InstDataBin InstDecode::decodeInstBin(const unsigned & src) {
         ret.setC(c);
         return ret;
     }
-    else if (opCode == 0x3FU) {
+    else if (opCode == 0x3Fu) {
         opCodeStr = InstLookUp::opCodeLookUp(opCode);
         InstDataBin ret;
         ret.setType(InstType::S);
