@@ -10,13 +10,16 @@
 
 #include <cstdio>
 #include <cstdlib>
+#include <string>
 
 namespace LB {
 
 // read iimage.bin, dimage.bin using C I/O
 class InstImageReader {
 public:
+    static unsigned readImageI(std::string filePath, unsigned* dst, unsigned* pc);
     static unsigned readImageI(FILE* iimage, unsigned* dst, unsigned* pc);
+    static unsigned readImageD(std::string filePath, unsigned* dst, unsigned* sp);
     static unsigned readImageD(FILE* dimage, unsigned* dst, unsigned* sp);
 
 private:

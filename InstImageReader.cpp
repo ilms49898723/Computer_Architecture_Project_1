@@ -9,6 +9,14 @@
 
 namespace LB {
 
+unsigned InstImageReader::readImageI(std::string filePath, unsigned* dst, unsigned* pc) {
+    FILE* iimage = fopen(filePath.c_str(), "rb");
+    if (!iimage) {
+        return 0u;
+    }
+    return readImageI(iimage, dst, pc);
+}
+
 unsigned InstImageReader::readImageI(FILE* iimage, unsigned* dst, unsigned* pc) {
     unsigned readPc = readWordFromBin(iimage);
     unsigned len = readWordFromBin(iimage);
@@ -18,6 +26,14 @@ unsigned InstImageReader::readImageI(FILE* iimage, unsigned* dst, unsigned* pc) 
         dst[wordRead] = readWordFromBin(iimage);
     }
     return wordRead;
+}
+
+unsigned InstImageReader::readImageD(std::string filePath, unsigned* dst, unsigned* sp) {
+    FILE* dimage = fopen(filePath.c_str(), "rb");
+    if (!dimage) {
+        return 0u;
+    }
+    return readImageD(dimage, dst, sp);
 }
 
 unsigned InstImageReader::readImageD(FILE* dimage, unsigned* dst, unsigned* sp) {
