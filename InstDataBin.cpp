@@ -11,7 +11,7 @@ namespace LB {
 
 InstDataBin::InstDataBin() {
     type = InstType::Undef;
-    opCode = rs = rt = rd = c = funct = 0u;
+    opCode = rs = rt = rd = c = funct = inst = 0u;
 }
 
 InstDataBin::~InstDataBin() {
@@ -45,6 +45,10 @@ unsigned InstDataBin::getFunct() const {
     return funct;
 }
 
+unsigned InstDataBin::getInst() const {
+    return inst;
+}
+
 void InstDataBin::setType(const InstType& val) {
     type = val;
 }
@@ -71,6 +75,10 @@ void InstDataBin::setC(const unsigned& val) {
 
 void InstDataBin::setFunct(const unsigned& val) {
     funct = val;
+}
+
+void InstDataBin::setInst(const unsigned& val) {
+    inst = val;
 }
 
 } /* namespace LB */

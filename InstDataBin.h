@@ -24,6 +24,7 @@ public:
     unsigned getRd() const;
     unsigned getC() const;
     unsigned getFunct() const;
+    unsigned getInst() const;
     void setType(const InstType& val);
     void setOpCode(const unsigned& val);
     void setRs(const unsigned& val);
@@ -31,6 +32,7 @@ public:
     void setRd(const unsigned& val);
     void setC(const unsigned& val);
     void setFunct(const unsigned& val);
+    void setInst(const unsigned& val);
 
 private:
     InstType type;
@@ -40,6 +42,7 @@ private:
     unsigned rd;
     unsigned c;
     unsigned funct;
+    unsigned inst;
 };
 
 } /* namespace LB */
