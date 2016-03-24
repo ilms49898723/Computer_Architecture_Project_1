@@ -54,7 +54,7 @@ void InstMemory::init(const unsigned& initPc) {
     memset(mem, 0, sizeof(unsigned char) * 1024);
 }
 
-unsigned InstMemory::getRegValue(const unsigned& addr, const InstMemLen& type) {
+unsigned InstMemory::getRegValue(const unsigned& addr, const InstMemLen& type) const {
     if (type == InstMemLen::WORD) {
         return reg[addr];
     }
@@ -81,7 +81,7 @@ void InstMemory::setRegValue(const unsigned& addr, const unsigned& val, const In
     }
 }
 
-unsigned InstMemory::getMemValue(const unsigned& addr, const InstMemLen& type) {
+unsigned InstMemory::getMemValue(const unsigned& addr, const InstMemLen& type) const {
     if (type == InstMemLen::WORD) {
         return (mem[addr] << 24) | (mem[addr + 1] << 16) | (mem[addr + 2] << 8) | mem[addr + 3];
     }
@@ -109,7 +109,7 @@ void InstMemory::setMemValue(const unsigned& addr, const unsigned& val, const In
     }
 }
 
-unsigned InstMemory::getPc() {
+unsigned InstMemory::getPc() const {
     return pc;
 }
 
@@ -117,7 +117,7 @@ void InstMemory::setPc(const unsigned& val) {
     pc = val;
 }
 
-unsigned InstMemory::getInitPc() {
+unsigned InstMemory::getInitPc() const {
     return initialPc;
 }
 
