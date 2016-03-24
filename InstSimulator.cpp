@@ -454,7 +454,7 @@ void InstSimulator::simulateTypeJ(const InstDataBin& inst) {
 void InstSimulator::checkInst(const InstDataBin& inst) {
     if (inst.getType() == InstType::R) {
         // write $0 error
-        if (inst.getFunct() != 0x08u) { // jr
+        if (inst.getFunct() != 0x08u && inst.getInst() != 0u) { // jr
             detectRegWriteZero(inst.getRd());
         }
         // number overflow
