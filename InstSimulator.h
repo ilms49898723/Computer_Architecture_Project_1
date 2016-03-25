@@ -15,6 +15,7 @@
 #include "InstMemory.h"
 #include "InstDataStr.h"
 #include "InstErrorDetector.h"
+#include "InstEnum.h"
 
 namespace lb {
 
@@ -45,6 +46,6 @@ private:
     InstAction detectDataMisaligned(const unsigned& addr, const InstMemLen& type);
 };
 
-} /* namespace LB */
+} /* namespace lb */
 
 #endif /* INSTSIMULATOR_H_ */

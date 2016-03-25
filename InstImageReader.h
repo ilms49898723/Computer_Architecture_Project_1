@@ -27,6 +27,6 @@ public:
     static unsigned readWordFromBin(FILE* fin);
 };
 
-} /* namespace LB */
+} /* namespace lb */
 
 #endif /* INSTIMAGEREADER_H_ */

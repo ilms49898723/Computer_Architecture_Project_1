@@ -11,10 +11,11 @@
 #include <cstring>
 #include <string>
 #include "InstUtility.h"
+#include "InstEnum.h"
 
 namespace lb {
 
-// 1024 memory + 32 registers + pc
+// 1024 bytes memory + 32 registers + pc
 class InstMemory {
 public:
     //check whether the address is valid (or misaligned)
@@ -51,6 +52,6 @@ private:
     unsigned initialPc;
 };
 
-} /* namespace LB */
+} /* namespace lb */
 
 #endif /* INSTMEMORY_H_ */

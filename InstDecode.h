@@ -13,6 +13,7 @@
 #include "InstDataStr.h"
 #include "InstLookUp.h"
 #include "InstUtility.h"
+#include "InstEnum.h"
 
 namespace lb {
 
@@ -37,6 +38,6 @@ public:
     static InstDataBin decodeInstBin(const unsigned* src);
 };
 
-} /* namespace LB */
+} /* namespace lb */
 
 #endif /* INSTDECODE_H_ */

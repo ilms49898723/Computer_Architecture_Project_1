@@ -10,11 +10,12 @@
 
 #include <string>
 #include "InstUtility.h"
+#include "InstEnum.h"
 
 namespace lb {
 
 // Data structure to store readable Instruction set using "String"
-// Use getXXX() function to Access Private Members
+// Use getXXX() function to access private members
 
 class InstDataStr {
 public:
@@ -46,6 +47,6 @@ private:
     std::string funct;
 };
 
-} /* namespace LB */
+} /* namespace lb */
 
 #endif /* INSTDATASTR_H_ */

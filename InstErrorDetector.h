@@ -12,6 +12,7 @@
 #include "InstDataStr.h"
 #include "InstUtility.h"
 #include "InstMemory.h"
+#include "InstEnum.h"
 
 namespace lb {
 
@@ -36,6 +37,6 @@ public:
     static bool isAlignedAddr(const unsigned& addr, const InstMemLen& type);
 };
 
-} /* namespace LB */
+} /* namespace lb */
 
 #endif /* INSTERRORDETECTOR_H_ */

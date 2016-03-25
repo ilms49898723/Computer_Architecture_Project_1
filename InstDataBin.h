@@ -10,6 +10,7 @@
 
 #include <string>
 #include "InstUtility.h"
+#include "InstEnum.h"
 
 namespace lb {
 
@@ -45,6 +46,6 @@ private:
     unsigned inst;
 };
 
-} /* namespace LB */
+} /* namespace lb */
 
 #endif /* INSTDATABIN_H_ */

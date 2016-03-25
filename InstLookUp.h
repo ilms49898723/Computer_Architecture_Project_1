@@ -30,6 +30,6 @@ private:
     const static std::string registerLookUpTable[];
 };
 
-} /* namespace LB */
+} /* namespace lb */
 
 #endif /* INSTLOOKUP_H_ */
