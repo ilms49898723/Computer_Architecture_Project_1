@@ -57,7 +57,7 @@ void InstSimulator::simulate(FILE* snapshot, FILE* errorDump) {
     int currentInstIdx = (memory.getPc() - memory.getInitPc()) >> 2;
     {
         // initial state dump
-        dumpMemoryInfoPrivate(cycle);
+        dumpMemoryInfo(cycle);
         ++cycle;
     }
     while (instSet[currentInstIdx].getOpCode() != 0x3Fu) {
@@ -74,13 +74,13 @@ void InstSimulator::simulate(FILE* snapshot, FILE* errorDump) {
         else if (current.getType() == InstType::J) {
             simulateTypeJ(current);
         }
-        dumpMemoryInfoPrivate(cycle);
+        dumpMemoryInfo(cycle);
         currentInstIdx = (memory.getPc() - memory.getInitPc()) >> 2;
         ++cycle;
     }
 }
 
-void InstSimulator::dumpMemoryInfoPrivate(const int& cycle) {
+void InstSimulator::dumpMemoryInfo(const int& cycle) {
     fprintf(snapshot, "cycle %d\n", cycle);
     for (int i = 0; i < 32; ++i) {
         fprintf(snapshot, "$%02d: 0x%08X\n", i, memory.getRegValue(i, InstMemLen::WORD));
