@@ -7,8 +7,10 @@
 
 #include "InstLookUp.h"
 
-const std::string LB::InstLookUp::opCodeLookUpTable[] = {
-        "R-Type",   // 0x00
+namespace LB {
+
+const std::string InstLookUp::opCodeLookUpTable[] = {
+        "R-Type", // 0x00
         "undef",
         "j",
         "jal",
@@ -54,7 +56,7 @@ const std::string LB::InstLookUp::opCodeLookUpTable[] = {
         "sw"
 };
 
-const std::string LB::InstLookUp::functLookUpTable[] = {
+const std::string InstLookUp::functLookUpTable[] = {
         "sll",    // 0x00
         "undef",
         "srl",
@@ -100,7 +102,7 @@ const std::string LB::InstLookUp::functLookUpTable[] = {
         "slt"     // 0x30
 };
 
-const std::string LB::InstLookUp::registerLookUpTable[] = {
+const std::string InstLookUp::registerLookUpTable[] = {
         "zero",
         "at",
         "v0",
@@ -135,33 +137,35 @@ const std::string LB::InstLookUp::registerLookUpTable[] = {
         "ra"
 };
 
-std::string LB::InstLookUp::opCodeLookUp(const unsigned& src) {
-    if (src == 0x3F) {
+std::string InstLookUp::opCodeLookUp(const unsigned& src) {
+    if (src == 0x3Fu) {
         return "halt";
     }
-    if (src > 0x2B) {
+    if (src > 0x2Bu) {
         return "undef";
     }
-    return LB::InstLookUp::opCodeLookUpTable[src];
+    return InstLookUp::opCodeLookUpTable[src];
 }
 
-std::string LB::InstLookUp::functLookUp(const unsigned& src) {
-    if (src > 0x30) {
+std::string InstLookUp::functLookUp(const unsigned& src) {
+    if (src > 0x30u) {
         return "undef";
     }
-    return LB::InstLookUp::functLookUpTable[src];
+    return InstLookUp::functLookUpTable[src];
 }
 
-std::string LB::InstLookUp::registerLookUpNumber(const unsigned& src) {
-    if (src > 0x1F) {
+std::string InstLookUp::registerLookUpNumber(const unsigned& src) {
+    if (src > 0x1Fu) {
         return "undef";
     }
-    return LB::toString(src);
+    return toString(src);
 }
 
-std::string LB::InstLookUp::registerLookUpName(const unsigned& src) {
-    if (src > 0x1F) {
+std::string InstLookUp::registerLookUpName(const unsigned& src) {
+    if (src > 0x1Fu) {
         return "undef";
     }
-    return LB::InstLookUp::registerLookUpTable[src];
+    return InstLookUp::registerLookUpTable[src];
 }
+
+} /* namespace LB */

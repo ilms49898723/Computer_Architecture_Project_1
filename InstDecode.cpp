@@ -7,7 +7,9 @@
 
 #include "InstDecode.h"
 
-LB::InstData LB::InstDecode::decodeInst(const unsigned& src) {
+namespace LB {
+
+InstDataStr InstDecode::decodeInstStr(const unsigned& src) {
     unsigned opCode;
     unsigned rs, rt, rd;
     unsigned c;
@@ -16,24 +18,24 @@ LB::InstData LB::InstDecode::decodeInst(const unsigned& src) {
     std::string rsStr, rtStr, rdStr;
     std::string cStr;
     std::string functStr;
-    opCode = LB::getBitsInRange(src, 26, 32);
-    opCodeStr = LB::InstLookUp::opCodeLookUp(opCode);
+    opCode = getBitsInRange(src, 26, 32);
+    opCodeStr = InstLookUp::opCodeLookUp(opCode);
     if (opCodeStr == "undef") {
-        return LB::InstData();
+        return InstDataStr();
     }
-    else if (opCode == 0x0U) {
-        funct = LB::getBitsInRange(src, 0, 6);
-        rs = LB::getBitsInRange(src, 21, 26);
-        rt = LB::getBitsInRange(src, 16, 21);
-        rd = LB::getBitsInRange(src, 11, 16);
-        c = LB::getBitsInRange(src, 6, 11);
-        rsStr = LB::InstLookUp::registerLookUpNumber(rs);
-        rtStr = LB::InstLookUp::registerLookUpNumber(rt);
-        rdStr = LB::InstLookUp::registerLookUpNumber(rd);
-        cStr = LB::toHexString(c);
-        functStr = LB::InstLookUp::functLookUp(funct);
-        InstData ret;
-        ret.setType(LB::InstType::R);
+    else if (opCode == 0x0u) {
+        funct = getBitsInRange(src, 0, 6);
+        rs = getBitsInRange(src, 21, 26);
+        rt = getBitsInRange(src, 16, 21);
+        rd = getBitsInRange(src, 11, 16);
+        c = getBitsInRange(src, 6, 11);
+        rsStr = InstLookUp::registerLookUpNumber(rs);
+        rtStr = InstLookUp::registerLookUpNumber(rt);
+        rdStr = InstLookUp::registerLookUpNumber(rd);
+        cStr = toHexString(c);
+        functStr = InstLookUp::functLookUp(funct);
+        InstDataStr ret;
+        ret.setType(InstType::R);
         ret.setOpCode(opCodeStr);
         ret.setRs(rsStr);
         ret.setRt(rtStr);
@@ -42,31 +44,31 @@ LB::InstData LB::InstDecode::decodeInst(const unsigned& src) {
         ret.setFunct(functStr);
         return ret;
     }
-    else if (opCode == 0x02U || opCode == 0x03U) {
-        c = LB::getBitsInRange(src, 0, 26);
-        cStr = LB::toHexString(c);
-        InstData ret;
-        ret.setType(LB::InstType::J);
+    else if (opCode == 0x02u || opCode == 0x03u) {
+        c = getBitsInRange(src, 0, 26);
+        cStr = toHexString(c);
+        InstDataStr ret;
+        ret.setType(InstType::J);
         ret.setOpCode(opCodeStr);
         ret.setC(cStr);
         return ret;
     }
-    else if (opCode == 0x3FU) {
-        opCodeStr = LB::InstLookUp::opCodeLookUp(opCode);
-        InstData ret;
-        ret.setType(LB::InstType::S);
+    else if (opCode == 0x3Fu) {
+        opCodeStr = InstLookUp::opCodeLookUp(opCode);
+        InstDataStr ret;
+        ret.setType(InstType::S);
         ret.setOpCode(opCodeStr);
         return ret;
     }
     else {
-        rs = LB::getBitsInRange(src, 21, 26);
-        rt = LB::getBitsInRange(src, 16, 21);
-        c = LB::getBitsInRange(src, 0, 16);
-        rsStr = LB::InstLookUp::registerLookUpNumber(rs);
-        rtStr = LB::InstLookUp::registerLookUpNumber(rt);
-        cStr = LB::toHexString(c);
-        InstData ret;
-        ret.setType(LB::InstType::I);
+        rs = getBitsInRange(src, 21, 26);
+        rt = getBitsInRange(src, 16, 21);
+        c = getBitsInRange(src, 0, 16);
+        rsStr = InstLookUp::registerLookUpNumber(rs);
+        rtStr = InstLookUp::registerLookUpNumber(rt);
+        cStr = toHexString(c);
+        InstDataStr ret;
+        ret.setType(InstType::I);
         ret.setOpCode(opCodeStr);
         ret.setRs(rsStr);
         ret.setRt(rtStr);
@@ -75,7 +77,74 @@ LB::InstData LB::InstDecode::decodeInst(const unsigned& src) {
     }
 }
 
-LB::InstData LB::InstDecode::decodeInst(const unsigned* src) {
+InstDataStr InstDecode::decodeInstStr(const unsigned* src) {
     const unsigned argu = (src[0] << 16) | src[1];
-    return LB::InstDecode::decodeInst(argu);
+    return InstDecode::decodeInstStr(argu);
 }
+
+InstDataBin InstDecode::decodeInstBin(const unsigned& src) {
+    unsigned opCode;
+    unsigned rs, rt, rd;
+    unsigned c;
+    unsigned funct;
+    std::string opCodeStr;
+    opCode = getBitsInRange(src, 26, 32);
+    opCodeStr = InstLookUp::opCodeLookUp(opCode);
+    if (opCodeStr == "undef") {
+        return InstDataBin();
+    }
+    else if (opCode == 0x0u) {
+        funct = getBitsInRange(src, 0, 6);
+        rs = getBitsInRange(src, 21, 26);
+        rt = getBitsInRange(src, 16, 21);
+        rd = getBitsInRange(src, 11, 16);
+        c = getBitsInRange(src, 6, 11);
+        InstDataBin ret;
+        ret.setInst(src);
+        ret.setType(InstType::R);
+        ret.setOpCode(opCode);
+        ret.setRs(rs);
+        ret.setRt(rt);
+        ret.setRd(rd);
+        ret.setC(c);
+        ret.setFunct(funct);
+        return ret;
+    }
+    else if (opCode == 0x02u || opCode == 0x03u) {
+        c = getBitsInRange(src, 0, 26);
+        InstDataBin ret;
+        ret.setInst(src);
+        ret.setType(InstType::J);
+        ret.setOpCode(opCode);
+        ret.setC(c);
+        return ret;
+    }
+    else if (opCode == 0x3Fu) {
+        opCodeStr = InstLookUp::opCodeLookUp(opCode);
+        InstDataBin ret;
+        ret.setInst(src);
+        ret.setType(InstType::S);
+        ret.setOpCode(opCode);
+        return ret;
+    }
+    else {
+        rs = getBitsInRange(src, 21, 26);
+        rt = getBitsInRange(src, 16, 21);
+        c = getBitsInRange(src, 0, 16);
+        InstDataBin ret;
+        ret.setInst(src);
+        ret.setType(InstType::I);
+        ret.setOpCode(opCode);
+        ret.setRs(rs);
+        ret.setRt(rt);
+        ret.setC(c);
+        return ret;
+    }
+}
+
+InstDataBin InstDecode::decodeInstBin(const unsigned* src) {
+    const unsigned argu = (src[0] << 16) | src[1];
+    return InstDecode::decodeInstBin(argu);
+}
+
+} /* namespace LB */

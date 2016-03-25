@@ -13,6 +13,32 @@
 
 namespace LB {
 
+// enum class for basic operation type
+// add, sub, mul, div, mod
+enum class InstOpType : unsigned {
+    ADD, SUB, MUL, DIV, MOD
+};
+
+// enum class for simulate operation
+// continue, halt
+enum class InstAction : unsigned {
+    CONTINUE, HALT
+};
+
+// enum class for instruction type
+// R-type, I-type, J-type, Specialized, Undefined
+enum class InstType : unsigned {
+    R, I, J, S, Undef
+};
+
+// enum class for memory size type
+// WORD: 4 bytes
+// HALFWORD: 2 bytes
+// BYTE: 1 byte
+enum class InstMemLen : unsigned {
+    WORD, HALF, BYTE
+};
+
 template<typename Tp>
 std::string toString(const Tp& val) {
     std::basic_stringstream<char> oss;
@@ -35,6 +61,22 @@ std::string toHexString(const Tp& val) {
     oss << std::showbase << std::hex << val;
     return oss.str();
 }
+
+// for convenience, only use static_cast<int>
+int toSigned(const unsigned& src);
+
+// extend sign bits
+// ex. 1 byte "0x80" to 4 bytes "0xFFFFFF80"
+int toSigned(const unsigned& src, const LB::InstMemLen& type);
+
+// extend sign bits
+// similar to int toSigned(const unsigned& src, const LB::InstMemLen& type);
+// argument type pass by bits number instead
+// bits: src bits
+int toSigned(const unsigned& src, const int& bits);
+
+// for convenience, only use static_cast<unsigned>
+unsigned toUnsigned(const int& src);
 
 // get bits from range [l, r)
 // ex. getBitsInRange(0xC, 0, 3) returns 0x4
