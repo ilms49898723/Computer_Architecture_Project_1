@@ -22,14 +22,14 @@ namespace lb {
 // data misaligned
 class InstErrorDetector {
 public:
-    // for argument with type InstDataBin, InstDataStr
+    // reg: addr to check
     static bool isRegWritable(const unsigned& reg);
 
     // check overflow
-    // check src0 "+" src1
+    // check src0 op src1, where op == ADD or SUB
     static bool isOverflowed(const int &src0, const int &src1, const InstOpType& op);
 
-    // check memory address(should between 0~1023)
+    // check memory address(should between 0 to 1023)
     static bool isValidMemoryAddr(const unsigned& addr);
 
     // check misaligned address
