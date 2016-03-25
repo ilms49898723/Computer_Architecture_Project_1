@@ -35,6 +35,8 @@ private:
     FILE* errorDump;
     InstMemory memory;
     std::vector<InstDataBin> instSet;
+
+private:
     void dumpMemoryInfo(const int& cycle);
     void simulateTypeR(const InstDataBin& inst);
     void simulateTypeI(const InstDataBin& inst);
