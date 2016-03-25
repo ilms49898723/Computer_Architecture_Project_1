@@ -7,7 +7,7 @@
 
 #include "InstUtility.h"
 
-namespace LB {
+namespace lb {
 
 int toSigned(const unsigned& src) {
     return static_cast<int>(src);

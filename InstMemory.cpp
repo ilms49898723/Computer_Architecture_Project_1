@@ -7,7 +7,7 @@
 
 #include "InstMemory.h"
 
-namespace LB {
+namespace lb {
 
 bool InstMemory::isValidAddress(const unsigned& opCode, const unsigned& addr) {
     if (opCode == 0x23u || opCode == 0x2Bu) {

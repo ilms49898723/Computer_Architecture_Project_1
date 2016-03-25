@@ -13,7 +13,7 @@
 #include "InstUtility.h"
 #include "InstMemory.h"
 
-namespace LB {
+namespace lb {
 
 // detect error
 // write to $0

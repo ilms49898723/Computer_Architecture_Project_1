@@ -7,7 +7,7 @@
 
 #include "InstSimulator.h"
 
-namespace LB {
+namespace lb {
 
 InstSimulator::InstSimulator() {
     instSet.clear();

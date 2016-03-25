@@ -11,7 +11,7 @@
 #include <string>
 #include "InstUtility.h"
 
-namespace LB {
+namespace lb {
 
 class InstDataBin {
 public:

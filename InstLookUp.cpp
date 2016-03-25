@@ -7,7 +7,7 @@
 
 #include "InstLookUp.h"
 
-namespace LB {
+namespace lb {
 
 const std::string InstLookUp::opCodeLookUpTable[] = {
         "R-Type", // 0x00

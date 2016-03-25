@@ -7,7 +7,7 @@
 
 #include "InstDataBin.h"
 
-namespace LB {
+namespace lb {
 
 InstDataBin::InstDataBin() {
     type = InstType::Undef;

@@ -7,7 +7,7 @@
 
 #include "InstDataStr.h"
 
-namespace LB {
+namespace lb {
 
 InstDataStr::InstDataStr() {
     type = InstType::Undef;

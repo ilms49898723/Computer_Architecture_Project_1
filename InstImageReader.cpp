@@ -7,7 +7,7 @@
 
 #include "InstImageReader.h"
 
-namespace LB {
+namespace lb {
 
 unsigned InstImageReader::readImageI(std::string filePath, unsigned* dst, unsigned* pc) {
     FILE* iimage = fopen(filePath.c_str(), "rb");

@@ -12,7 +12,7 @@
 #include <string>
 #include "InstUtility.h"
 
-namespace LB {
+namespace lb {
 
 // 1024 memory + 32 registers + pc
 class InstMemory {

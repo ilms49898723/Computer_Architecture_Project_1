@@ -14,7 +14,7 @@
 #include "InstLookUp.h"
 #include "InstUtility.h"
 
-namespace LB {
+namespace lb {
 
 class InstDecode {
 public:

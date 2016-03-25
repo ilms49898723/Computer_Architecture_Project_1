@@ -15,8 +15,8 @@ int main(int argc, char **argv) {
     unsigned iLen, dLen;
     unsigned pc, sp;
     unsigned inst[2048], memory[2048];
-    iLen = LB::InstImageReader::readImageI("iimage.bin", inst, &pc);
-    dLen = LB::InstImageReader::readImageD("dimage.bin", memory, &sp);
+    iLen = lb::InstImageReader::readImageI("iimage.bin", inst, &pc);
+    dLen = lb::InstImageReader::readImageD("dimage.bin", memory, &sp);
     // simulate
     FILE *snapShot, *errorDump;
     snapShot = fopen("snapshot.rpt", "w");
@@ -24,7 +24,7 @@ int main(int argc, char **argv) {
     if (!snapShot || !errorDump) {
         return 0;
     }
-    LB::InstSimulator simulator;
+    lb::InstSimulator simulator;
     simulator.loadImageI(inst, iLen, pc);
     simulator.loadImageD(memory, dLen, sp);
     simulator.simulate(snapShot, errorDump);

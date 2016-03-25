@@ -7,7 +7,7 @@
 
 #include "InstDecode.h"
 
-namespace LB {
+namespace lb {
 
 InstDataStr InstDecode::decodeInstStr(const unsigned& src) {
     unsigned opCode;

@@ -12,7 +12,7 @@
 #include <cstdlib>
 #include <string>
 
-namespace LB {
+namespace lb {
 
 // read iimage.bin, dimage.bin using C I/O
 class InstImageReader {

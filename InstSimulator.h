@@ -16,7 +16,7 @@
 #include "InstDataStr.h"
 #include "InstErrorDetector.h"
 
-namespace LB {
+namespace lb {
 
 class InstSimulator {
 public:

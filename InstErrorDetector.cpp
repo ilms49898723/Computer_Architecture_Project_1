@@ -7,7 +7,7 @@
 
 #include "InstErrorDetector.h"
 
-namespace LB {
+namespace lb {
 
 bool InstErrorDetector::isRegWritable(const unsigned& reg) {
     return reg != 0u;

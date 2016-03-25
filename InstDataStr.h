@@ -11,7 +11,7 @@
 #include <string>
 #include "InstUtility.h"
 
-namespace LB {
+namespace lb {
 
 // Data structure to store readable Instruction set using "String"
 // Use getXXX() function to Access Private Members

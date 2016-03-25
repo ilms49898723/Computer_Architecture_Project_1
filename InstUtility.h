@@ -11,7 +11,7 @@
 #include <sstream>
 #include <string>
 
-namespace LB {
+namespace lb {
 
 // enum class for basic operation type
 // add, sub, mul, div, mod
@@ -67,7 +67,7 @@ int toSigned(const unsigned& src);
 
 // extend sign bits
 // ex. 1 byte "0x80" to 4 bytes "0xFFFFFF80"
-int toSigned(const unsigned& src, const LB::InstMemLen& type);
+int toSigned(const unsigned& src, const lb::InstMemLen& type);
 
 // extend sign bits
 // similar to int toSigned(const unsigned& src, const LB::InstMemLen& type);
