@@ -30,7 +30,7 @@ bool InstErrorDetector::isOverflowed(const int& src0, const int& src1, const Ins
 }
 
 bool InstErrorDetector::isValidMemoryAddr(const unsigned& addr) {
-    return addr >= 0u && addr < 1024u;
+    return addr < 1024u;
 }
 
 bool InstErrorDetector::isAlignedAddr(const unsigned& addr, const InstMemLen& type) {
