@@ -62,8 +62,7 @@ void InstSimulator::simulate(FILE* snapshot, FILE* errorDump) {
     }
     while (instSet[currentInstIdx].getOpCode() != 0x3Fu) {
         InstDataBin& current = instSet[currentInstIdx];
-        checkInst(current);
-        if (!isAlive) {
+        if (!checkInst(current)) {
             break;
         }
         if (current.getType() == InstType::R) {
@@ -454,7 +453,7 @@ void InstSimulator::simulateTypeJ(const InstDataBin& inst) {
     }
 }
 
-void InstSimulator::checkInst(const InstDataBin& inst) {
+bool InstSimulator::checkInst(const InstDataBin& inst) {
     if (inst.getType() == InstType::R) {
         // write $0 error
         if (inst.getFunct() != 0x08u && inst.getInst() != 0u) { // jr
@@ -582,11 +581,12 @@ void InstSimulator::checkInst(const InstDataBin& inst) {
         }
     }
     else if (inst.getType() == InstType::J) {
-        return;
+        return isAlive;
     }
     else {
-        return;
+        return isAlive;
     }
+    return isAlive;
 }
 
 InstAction InstSimulator::detectRegWriteZero(const unsigned& addr) {
