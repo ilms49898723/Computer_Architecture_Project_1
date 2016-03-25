@@ -457,7 +457,7 @@ bool InstSimulator::checkInst(const InstDataBin& inst) {
     if (inst.getType() == InstType::R) {
         // write $0 error
         if (inst.getFunct() != 0x08u && inst.getInst() != 0u) { // jr
-            detectRegWriteZero(inst.getRd());
+            detectWriteRegZero(inst.getRd());
         }
         // number overflow
         if (inst.getFunct() == 0x20u) { // add
@@ -481,7 +481,7 @@ bool InstSimulator::checkInst(const InstDataBin& inst) {
             inst.getOpCode() != 0x04u && // beq
             inst.getOpCode() != 0x05u && // bne
             inst.getOpCode() != 0x07u) { // bgtz
-            detectRegWriteZero(inst.getRt());
+            detectWriteRegZero(inst.getRt());
         }
         // number overflow
         if (inst.getOpCode() == 0x08u || // addi
@@ -599,7 +599,7 @@ bool InstSimulator::checkInst(const InstDataBin& inst) {
     return isAlive;
 }
 
-InstAction InstSimulator::detectRegWriteZero(const unsigned& addr) {
+InstAction InstSimulator::detectWriteRegZero(const unsigned& addr) {
     if (!InstErrorDetector::isRegWritable(addr)) {
         fprintf(errorDump, "In cycle %d: Write $0 Error\n", cycle);
     }
