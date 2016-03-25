@@ -11,7 +11,9 @@ OBJS := InstDataBin.o InstDataStr.o InstDecode.o InstErrorDetector.o \
 
 .PHONY: clean
 
-all: ${OBJS}
+all: single_cycle
+
+single_cycle: ${OBJS}
 	${CC} ${CFLAGS} -o single_cycle ${OBJS}
 
 .cpp.o:
