@@ -22,7 +22,7 @@ int main(int argc, char **argv) {
     snapShot = fopen("snapshot.rpt", "w");
     errorDump = fopen("error_dump.rpt", "w");
     if (!snapShot || !errorDump) {
-        return 0;
+        exit(EXIT_FAILURE);
     }
     lb::InstSimulator simulator;
     simulator.loadImageI(inst, iLen, pc);
