@@ -31,7 +31,7 @@ public:
     static bool isOverflowed(const int &src0, const int &src1, const InstOpType& op);
 
     // check memory address(should between 0 to 1023)
-    static bool isValidMemoryAddr(const unsigned& addr);
+    static bool isValidMemoryAddr(const unsigned& addr, const InstMemLen& type);
 
     // check misaligned address
     static bool isAlignedAddr(const unsigned& addr, const InstMemLen& type);

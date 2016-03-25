@@ -500,17 +500,27 @@ bool InstSimulator::checkInst(const InstDataBin& inst) {
         }
         // Address Memory overflow
         if (inst.getOpCode() == 0x23u || // lw
-            inst.getOpCode() == 0x21u || // lh
+            inst.getOpCode() == 0x2Bu) { // sw
+            int rs, c;
+            rs = toSigned(memory.getRegValue(inst.getRs(), InstMemLen::WORD));
+            c = toSigned(inst.getC(), 16);
+            detectMemAddrOverflow(toUnsigned(rs + c), InstMemLen::WORD);
+        }
+        if (inst.getOpCode() == 0x21u || // lh
             inst.getOpCode() == 0x25u || // lhu
-            inst.getOpCode() == 0x20u || // lb
+            inst.getOpCode() == 0x29u) { // sh
+            int rs, c;
+            rs = toSigned(memory.getRegValue(inst.getRs(), InstMemLen::WORD));
+            c = toSigned(inst.getC(), 16);
+            detectMemAddrOverflow(toUnsigned(rs + c), InstMemLen::HALF);
+        }
+        if (inst.getOpCode() == 0x20u || // lb
             inst.getOpCode() == 0x24u || // lbu
-            inst.getOpCode() == 0x2Bu || // sw
-            inst.getOpCode() == 0x29u || // sh
             inst.getOpCode() == 0x28u) { // sb
             int rs, c;
             rs = toSigned(memory.getRegValue(inst.getRs(), InstMemLen::WORD));
             c = toSigned(inst.getC(), 16);
-            detectMemAddrOverflow(toUnsigned(rs + c));
+            detectMemAddrOverflow(toUnsigned(rs + c), InstMemLen::BYTE);
         }
         // Data misaligned
         switch (inst.getOpCode()) {
@@ -603,8 +613,8 @@ InstAction InstSimulator::detectNumberOverflow(const int& a, const int& b, const
     return InstAction::CONTINUE;
 }
 
-InstAction InstSimulator::detectMemAddrOverflow(const unsigned& addr) {
-    if (!InstErrorDetector::isValidMemoryAddr(addr)) {
+InstAction InstSimulator::detectMemAddrOverflow(const unsigned& addr, const InstMemLen& type) {
+    if (!InstErrorDetector::isValidMemoryAddr(addr, type)) {
         fprintf(errorDump, "In cycle %d: Address Overflow\n", cycle);
         isAlive = false;
         return InstAction::HALT;

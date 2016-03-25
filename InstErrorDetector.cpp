@@ -29,8 +29,16 @@ bool InstErrorDetector::isOverflowed(const int& src0, const int& src1, const Ins
     return signA * signR < 0;
 }
 
-bool InstErrorDetector::isValidMemoryAddr(const unsigned& addr) {
-    return addr < 1024u;
+bool InstErrorDetector::isValidMemoryAddr(const unsigned& addr, const InstMemLen& type) {
+    if (type == InstMemLen::WORD) {
+        return addr < 1024u && (addr + 4) < 1024u;
+    }
+    else if (type == InstMemLen::HALF) {
+        return addr < 1024u && (addr + 2) < 1024u;
+    }
+    else {
+        return addr < 1024u;
+    }
 }
 
 bool InstErrorDetector::isAlignedAddr(const unsigned& addr, const InstMemLen& type) {

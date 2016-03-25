@@ -42,7 +42,7 @@ private:
     bool checkInst(const InstDataBin& inst);
     InstAction detectRegWriteZero(const unsigned& addr);
     InstAction detectNumberOverflow(const int& a, const int& b, const InstOpType& op);
-    InstAction detectMemAddrOverflow(const unsigned& addr);
+    InstAction detectMemAddrOverflow(const unsigned& addr, const InstMemLen& type);
     InstAction detectDataMisaligned(const unsigned& addr, const InstMemLen& type);
 };
 
