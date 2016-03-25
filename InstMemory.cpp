@@ -125,4 +125,4 @@ void InstMemory::setInitialPc(const unsigned& val) {
     initialPc = val;
 }
 
-} /* namespace LB */
+} /* namespace lb */

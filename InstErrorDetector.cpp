@@ -53,4 +53,4 @@ bool InstErrorDetector::isAlignedAddr(const unsigned& addr, const InstMemLen& ty
     }
 }
 
-} /* namespace LB */
+} /* namespace lb */

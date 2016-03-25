@@ -631,4 +631,4 @@ InstAction InstSimulator::detectDataMisaligned(const unsigned& addr, const InstM
     return InstAction::CONTINUE;
 }
 
-} /* namespace LB */
+} /* namespace lb */
