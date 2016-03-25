@@ -12,23 +12,23 @@
 
 int main(int argc, char **argv) {
     // load iimage, dimage
-    unsigned ilen, dlen;
+    unsigned iLen, dLen;
     unsigned pc, sp;
     unsigned inst[2048], memory[2048];
-    ilen = LB::InstImageReader::readImageI("iimage.bin", inst, &pc);
-    dlen = LB::InstImageReader::readImageD("dimage.bin", memory, &sp);
+    iLen = LB::InstImageReader::readImageI("iimage.bin", inst, &pc);
+    dLen = LB::InstImageReader::readImageD("dimage.bin", memory, &sp);
     // simulate
-    FILE *snapshot, *error;
-    snapshot = fopen("userSnapShot.rpt", "w");
-    error = fopen("userErrorDump.rpt", "w");
-    if (!snapshot || !error) {
+    FILE *snapShot, *errorDump;
+    snapShot = fopen("snapshot.rpt", "w");
+    errorDump = fopen("error_dump.rpt", "w");
+    if (!snapShot || !errorDump) {
         return 0;
     }
     LB::InstSimulator simulator;
-    simulator.loadImageI(inst, ilen, pc);
-    simulator.loadImageD(memory, dlen, sp);
-    simulator.simulate(snapshot, error);
-    fclose(snapshot);
-    fclose(error);
+    simulator.loadImageI(inst, iLen, pc);
+    simulator.loadImageD(memory, dLen, sp);
+    simulator.simulate(snapShot, errorDump);
+    fclose(snapShot);
+    fclose(errorDump);
     return 0;
 }
