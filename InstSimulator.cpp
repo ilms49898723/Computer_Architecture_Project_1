@@ -33,8 +33,17 @@ void InstSimulator::init() {
 void InstSimulator::loadImageI(const unsigned* src, const unsigned& len, const unsigned& pc) {
     memory.setPc(pc);
     memory.setInitialPc(pc);
+    unsigned total = 0u;
+    for (unsigned i = 0; i < (pc >> 2); ++i) {
+        instSet.push_back(InstDecode::decodeInstBin(0u));
+    }
+    total += (pc >> 2);
     for (unsigned i = 0; i < len; ++i) {
         instSet.push_back(InstDecode::decodeInstBin(src[i]));
+    }
+    total += len;
+    for (unsigned i = total; i < (1024 >> 2); ++i) {
+        instSet.push_back(InstDecode::decodeInstBin(0u));
     }
 }
 
@@ -54,7 +63,7 @@ void InstSimulator::simulate(FILE* snapshot, FILE* errorDump) {
     this->errorDump = errorDump;
     isAlive = true;
     cycle = 0;
-    int currentInstIdx = (memory.getPc() - memory.getInitPc()) >> 2;
+    int currentInstIdx = memory.getPc() >> 2;
     {
         // initial state dump
         dumpMemoryInfo(cycle);
@@ -75,7 +84,7 @@ void InstSimulator::simulate(FILE* snapshot, FILE* errorDump) {
             simulateTypeJ(current);
         }
         dumpMemoryInfo(cycle);
-        currentInstIdx = (memory.getPc() - memory.getInitPc()) >> 2;
+        currentInstIdx = memory.getPc() >> 2;
         ++cycle;
     }
 }
