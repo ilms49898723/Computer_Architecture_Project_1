@@ -4,4 +4,4 @@ Computer Architecture Project 1
 
 An easy Simulator
 
-Under Construction
+Not Tested
