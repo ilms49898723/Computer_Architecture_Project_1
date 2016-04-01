@@ -10,12 +10,7 @@
 namespace lb {
 
 InstSimulator::InstSimulator() {
-    instSet.clear();
-    memory.init();
-    cycle = 0;
-    snapshot = nullptr;
-    errorDump = nullptr;
-    isAlive = true;
+    init();
 }
 
 InstSimulator::~InstSimulator() {
@@ -244,7 +239,7 @@ void InstSimulator::simulateTypeI(const InstDataBin& inst) {
             // addiu, rt = rs + c(unsigned)
             unsigned rt, rs, c;
             rs = memory.getRegValue(inst.getRs(), InstMemLen::WORD);
-            c = toSigned(inst.getC(), 16);
+            c = toUnsigned(toSigned(inst.getC(), 16));
             rt = rs + c;
             memory.setRegValue(inst.getRt(), rt, InstMemLen::WORD);
             break;
@@ -270,7 +265,7 @@ void InstSimulator::simulateTypeI(const InstDataBin& inst) {
             c = toSigned(inst.getC(), 16);
             addr = toUnsigned(rs + c);
             rt = memory.getMemValue(addr, InstMemLen::HALF);
-            rt = toSigned(rt, InstMemLen::HALF);
+            rt = toUnsigned(toSigned(rt, InstMemLen::HALF));
             memory.setRegValue(inst.getRt(), rt, InstMemLen::WORD);
             break;
         }
@@ -295,7 +290,7 @@ void InstSimulator::simulateTypeI(const InstDataBin& inst) {
             c = toSigned(inst.getC(), 16);
             addr = toUnsigned(rs + c);
             rt = memory.getMemValue(addr, InstMemLen::BYTE);
-            rt = toSigned(rt, InstMemLen::BYTE);
+            rt = toUnsigned(toSigned(rt, InstMemLen::BYTE));
             memory.setRegValue(inst.getRt(), rt, InstMemLen::WORD);
             break;
         }
@@ -398,7 +393,7 @@ void InstSimulator::simulateTypeI(const InstDataBin& inst) {
             rs = memory.getRegValue(inst.getRs(), InstMemLen::WORD);
             rt = memory.getRegValue(inst.getRt(), InstMemLen::WORD);
             c = toSigned(inst.getC(), 16);
-            unsigned result = toSigned(rs) == toSigned(rt);
+            unsigned result = static_cast<unsigned>(toSigned(rs) == toSigned(rt));
             if (result == 1u) {
                 memory.setPc(memory.getPc() + 4 + 4 * c);
                 return;
@@ -412,7 +407,7 @@ void InstSimulator::simulateTypeI(const InstDataBin& inst) {
             rs = memory.getRegValue(inst.getRs(), InstMemLen::WORD);
             rt = memory.getRegValue(inst.getRt(), InstMemLen::WORD);
             c = toSigned(inst.getC(), 16);
-            unsigned result = toSigned(rs) != toSigned(rt);
+            unsigned result = static_cast<unsigned>((rs) != toSigned(rt));
             if (result == 1u) {
                 memory.setPc(memory.getPc() + 4 + 4 * c);
                 return;
@@ -456,6 +451,9 @@ void InstSimulator::simulateTypeJ(const InstDataBin& inst) {
             unsigned c = inst.getC();
             unsigned pc = (getBitsInRange(memory.getPc() + 4, 28, 32) << 28) | (c << 2);
             memory.setPc(pc);
+            break;
+        }
+        default: {
             break;
         }
     }
@@ -594,6 +592,9 @@ bool InstSimulator::checkInst(const InstDataBin& inst) {
                 rs = toSigned(memory.getRegValue(inst.getRs(), InstMemLen::WORD));
                 c = toSigned(inst.getC(), 16);
                 detectDataMisaligned(toUnsigned(rs + c), InstMemLen::BYTE);
+                break;
+            }
+            default: {
                 break;
             }
         }
