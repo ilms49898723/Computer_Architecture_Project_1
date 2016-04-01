@@ -2,6 +2,6 @@
 
 Computer Architecture Project 1
 
-An easy Simulator
+An easy MIPS Simulator(school mini project)
 
-Not Tested
+(CLion Project if using IDE)
