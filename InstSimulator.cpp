@@ -32,7 +32,6 @@ void InstSimulator::init() {
 
 void InstSimulator::loadImageI(const unsigned* src, const unsigned& len, const unsigned& pc) {
     memory.setPc(pc);
-    memory.setInitialPc(pc);
     unsigned total = 0u;
     for (unsigned i = 0; i < (pc >> 2); ++i) {
         instSet.push_back(InstDecode::decodeInstBin(0u));
@@ -91,7 +90,7 @@ void InstSimulator::simulate(FILE* snapshot, FILE* errorDump) {
 
 void InstSimulator::dumpMemoryInfo(const int& cycle) {
     fprintf(snapshot, "cycle %d\n", cycle);
-    for (int i = 0; i < 32; ++i) {
+    for (unsigned i = 0; i < 32; ++i) {
         fprintf(snapshot, "$%02d: 0x%08X\n", i, memory.getRegValue(i, InstMemLen::WORD));
     }
     fprintf(snapshot, "PC: 0x%08X\n", memory.getPc());
