@@ -462,7 +462,7 @@ void InstSimulator::simulateTypeJ(const InstDataBin& inst) {
 bool InstSimulator::checkInst(const InstDataBin& inst) {
     if (inst.getType() == InstType::R) {
         // write $0 error
-        if (inst.getFunct() != 0x08u && inst.getInst() != 0u) { // jr
+        if (inst.getFunct() != 0x08u && !isNOP(inst)) { // jr
             detectWriteRegZero(inst.getRd());
         }
         // number overflow
@@ -606,6 +606,14 @@ bool InstSimulator::checkInst(const InstDataBin& inst) {
         return isAlive;
     }
     return isAlive;
+}
+
+bool InstSimulator::isNOP(const InstDataBin &inst) {
+    return !inst.getOpCode() &&
+           !inst.getRt() &&
+           !inst.getRd() &&
+           !inst.getC() &&
+           !inst.getFunct();
 }
 
 InstAction InstSimulator::detectWriteRegZero(const unsigned& addr) {

@@ -42,6 +42,7 @@ private:
     void simulateTypeI(const InstDataBin& inst);
     void simulateTypeJ(const InstDataBin& inst);
     bool checkInst(const InstDataBin& inst);
+    bool isNOP(const InstDataBin& inst);
     InstAction detectWriteRegZero(const unsigned& addr);
     InstAction detectNumberOverflow(const int& a, const int& b, const InstOpType& op);
     InstAction detectMemAddrOverflow(const unsigned& addr, const InstMemLen& type);
