@@ -29,11 +29,7 @@ void InstSimulator::init() {
 
 void InstSimulator::loadImageI(const unsigned* src, const unsigned& len, const unsigned& pc) {
     memory.setPc(pc);
-    unsigned instSetIdx = 0;
-    for (unsigned i = 0; i < (pc >> 2); ++i) {
-        instSet[instSetIdx] = InstDecode::decodeInstBin(0u);
-        ++instSetIdx;
-    }
+    unsigned instSetIdx = pc >> 2;
     for (unsigned i = 0; i < len; ++i) {
         instSet[instSetIdx] = InstDecode::decodeInstBin(src[i]);
         ++instSetIdx;
