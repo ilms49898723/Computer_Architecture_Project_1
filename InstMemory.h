@@ -18,11 +18,6 @@ namespace lb {
 // 1024 bytes memory + 32 registers + pc
 class InstMemory {
 public:
-    //check whether the address is valid (or misaligned)
-    static bool isValidAddress(const unsigned& opCode, const unsigned& addr);
-    static bool isValidAddress(const std::string& opCode, const unsigned& addr);
-
-public:
     InstMemory();
     InstMemory(const unsigned& initPc);
     virtual ~InstMemory();
@@ -40,16 +35,11 @@ public:
     unsigned getPc() const;
     // set pc
     void setPc(const unsigned& val);
-    // get initializePc
-    unsigned getInitPc() const;
-    // set initializePc
-    void setInitialPc(const unsigned& val);
 
 private:
     unsigned char mem[1024];
     unsigned reg[32];
     unsigned pc;
-    unsigned initialPc;
 };
 
 } /* namespace lb */

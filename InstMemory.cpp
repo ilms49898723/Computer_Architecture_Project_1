@@ -9,38 +9,14 @@
 
 namespace lb {
 
-bool InstMemory::isValidAddress(const unsigned& opCode, const unsigned& addr) {
-    if (opCode == 0x23u || opCode == 0x2Bu) {
-        return (addr % 4) == 0;
-    }
-    else if (opCode == 0x21u || opCode == 0x25u || opCode == 0x29u) {
-        return (addr & 1) == 0;
-    }
-    else {
-        return true;
-    }
-}
-
-bool InstMemory::isValidAddress(const std::string& opCode, const unsigned& addr) {
-    if (opCode == "lw" || opCode == "sw") {
-        return (addr % 4) == 0;
-    }
-    else if (opCode == "lh" || opCode == "lhu" || opCode == "sh") {
-        return (addr & 1) == 0;
-    }
-    else {
-        return true;
-    }
-}
-
 InstMemory::InstMemory() {
-    initialPc = pc = 0u;
+    pc = 0u;
     memset(reg, 0, sizeof(unsigned) * 32);
     memset(mem, 0, sizeof(unsigned char) * 1024);
 }
 
 InstMemory::InstMemory(const unsigned& initPc) {
-    initialPc = pc = initPc;
+    pc = initPc;
     memset(reg, 0, sizeof(unsigned) * 32);
     memset(mem, 0, sizeof(unsigned char) * 1024);
 }
@@ -115,14 +91,6 @@ unsigned InstMemory::getPc() const {
 
 void InstMemory::setPc(const unsigned& val) {
     pc = val;
-}
-
-unsigned InstMemory::getInitPc() const {
-    return initialPc;
-}
-
-void InstMemory::setInitialPc(const unsigned& val) {
-    initialPc = val;
 }
 
 } /* namespace lb */
