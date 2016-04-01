@@ -10,7 +10,6 @@
 
 #include <cstdio>
 #include <cstdlib>
-#include <vector>
 #include "InstDecode.h"
 #include "InstMemory.h"
 #include "InstDataStr.h"
@@ -20,6 +19,9 @@
 namespace lb {
 
 class InstSimulator {
+private:
+    constexpr static int maxn = 2048;
+
 public:
     InstSimulator();
     virtual ~InstSimulator();
@@ -34,7 +36,7 @@ private:
     FILE* snapshot;
     FILE* errorDump;
     InstMemory memory;
-    std::vector<InstDataBin> instSet;
+    InstDataBin instSet[maxn];
 
 private:
     void dumpMemoryInfo(const int& cycle);

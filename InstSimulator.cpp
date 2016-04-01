@@ -17,27 +17,26 @@ InstSimulator::~InstSimulator() {
 }
 
 void InstSimulator::init() {
-    instSet.clear();
     memory.init();
     cycle = 0;
     snapshot = nullptr;
     errorDump = nullptr;
     isAlive = true;
+    for (int i = 0; i < InstSimulator::maxn; ++i) {
+        instSet[i] = InstDecode::decodeInstBin(0u);
+    }
 }
 
 void InstSimulator::loadImageI(const unsigned* src, const unsigned& len, const unsigned& pc) {
     memory.setPc(pc);
-    unsigned total = 0u;
+    unsigned instSetIdx = 0;
     for (unsigned i = 0; i < (pc >> 2); ++i) {
-        instSet.push_back(InstDecode::decodeInstBin(0u));
+        instSet[instSetIdx] = InstDecode::decodeInstBin(0u);
+        ++instSetIdx;
     }
-    total += (pc >> 2);
     for (unsigned i = 0; i < len; ++i) {
-        instSet.push_back(InstDecode::decodeInstBin(src[i]));
-    }
-    total += len;
-    for (unsigned i = total; i < (1024 >> 2); ++i) {
-        instSet.push_back(InstDecode::decodeInstBin(0u));
+        instSet[instSetIdx] = InstDecode::decodeInstBin(src[i]);
+        ++instSetIdx;
     }
 }
 
@@ -50,9 +49,6 @@ void InstSimulator::loadImageD(const unsigned* src, const unsigned& len, const u
 }
 
 void InstSimulator::simulate(FILE* snapshot, FILE* errorDump) {
-    if (instSet.empty()) {
-        return;
-    }
     this->snapshot = snapshot;
     this->errorDump = errorDump;
     isAlive = true;
@@ -180,7 +176,7 @@ void InstSimulator::simulateTypeR(const InstDataBin& inst) {
         }
         case 0x00u: {
             // sll, rd = rt << c
-            // here no need to check $zero if sll $0, $0, 0(nop)
+            // here no need to check write to $zero if sll $0, $0, 0(nop)
             unsigned rd, rt, c;
             rt = memory.getRegValue(inst.getRt(), InstMemLen::WORD);
             c = inst.getC();
