@@ -4,10 +4,6 @@ project(Computer_Architecture_Project_1)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 set(SOURCE_FILES
-    .settings/org.eclipse.cdt.managedbuilder.core.prefs
-    .cproject
-    .gitignore
-    .project
     InstDataBin.cpp
     InstDataBin.h
     InstDataStr.cpp
