@@ -1,5 +1,5 @@
 /*
- * InstDecode.cpp
+ * InstDecoder.cpp
  *
  *  Created on: 2016/03/09
  *      Author: LittleBird
