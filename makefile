@@ -2,7 +2,7 @@
 
 CC := g++
 CFLAGS := -std=c++11 -O3 -Wall
-OBJS := InstDataBin.o InstDataStr.o InstDecode.o InstErrorDetector.o \
+OBJS := InstDataBin.o InstDataStr.o InstDecoder.o InstErrorDetector.o \
         InstImageReader.o InstLookUp.o InstMemory.o InstSimulator.o \
         InstUtility.o main.o
 
@@ -14,7 +14,7 @@ OBJS := InstDataBin.o InstDataStr.o InstDecode.o InstErrorDetector.o \
 all: single_cycle
 
 single_cycle: ${OBJS}
-	${CC} ${CFLAGS} -o single_cycle ${OBJS}
+	${CC} ${CFLAGS} -o $@ ${OBJS}
 
 .cpp.o:
 	${CC} ${CFLAGS} -c $<
