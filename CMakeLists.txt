@@ -8,8 +8,8 @@ set(SOURCE_FILES
     InstDataBin.h
     InstDataStr.cpp
     InstDataStr.h
-        InstDecoder.cpp
-        InstDecoder.h
+    InstDecoder.cpp
+    InstDecoder.h
     InstEnum.h
     InstErrorDetector.cpp
     InstErrorDetector.h
@@ -23,8 +23,6 @@ set(SOURCE_FILES
     InstSimulator.h
     InstUtility.cpp
     InstUtility.h
-    main.cpp
-    makefile
-    README.md)
+    main.cpp)
 
 add_executable(Computer_Architecture_Project_1 ${SOURCE_FILES})
