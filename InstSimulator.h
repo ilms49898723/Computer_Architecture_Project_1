@@ -10,7 +10,7 @@
 
 #include <cstdio>
 #include <cstdlib>
-#include "InstDecode.h"
+#include "InstDecoder.h"
 #include "InstMemory.h"
 #include "InstDataStr.h"
 #include "InstErrorDetector.h"

@@ -8,8 +8,8 @@ set(SOURCE_FILES
     InstDataBin.h
     InstDataStr.cpp
     InstDataStr.h
-    InstDecode.cpp
-    InstDecode.h
+        InstDecoder.cpp
+        InstDecoder.h
     InstEnum.h
     InstErrorDetector.cpp
     InstErrorDetector.h

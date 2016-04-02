@@ -23,7 +23,7 @@ void InstSimulator::init() {
     errorDump = nullptr;
     isAlive = true;
     for (int i = 0; i < InstSimulator::maxn; ++i) {
-        instSet[i] = InstDecode::decodeInstBin(0u);
+        instSet[i] = InstDecoder::decodeInstBin(0u);
     }
 }
 
@@ -31,7 +31,7 @@ void InstSimulator::loadImageI(const unsigned* src, const unsigned& len, const u
     memory.setPc(pc);
     unsigned instSetIdx = pc >> 2;
     for (unsigned i = 0; i < len; ++i) {
-        instSet[instSetIdx] = InstDecode::decodeInstBin(src[i]);
+        instSet[instSetIdx] = InstDecoder::decodeInstBin(src[i]);
         ++instSetIdx;
     }
 }
