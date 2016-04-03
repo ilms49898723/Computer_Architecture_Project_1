@@ -399,7 +399,7 @@ void InstSimulator::simulateTypeI(const InstDataBin& inst) {
             rs = memory.getRegValue(inst.getRs(), InstMemLen::WORD);
             rt = memory.getRegValue(inst.getRt(), InstMemLen::WORD);
             c = toSigned(inst.getC(), 16);
-            unsigned result = static_cast<unsigned>((rs) != toSigned(rt));
+            unsigned result = static_cast<unsigned>(toSigned(rs) != toSigned(rt));
             if (result == 1u) {
                 memory.setPc(memory.getPc() + 4 + 4 * c);
                 return;
